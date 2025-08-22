@@ -1,0 +1,358 @@
+.event-details {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 20px;
+}
+
+.event-details-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.event-header {
+  text-align: center;
+  margin-bottom: 40px;
+  color: #333;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+  margin-bottom: 20px;
+  transition: color 0.3s ease;
+}
+
+.back-button:hover {
+  color: #5a6fd8;
+}
+
+.event-header h1 {
+  font-size: 2.5rem;
+  margin: 0 0 15px 0;
+  color: #333;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.event-subtitle {
+  font-size: 1.2rem;
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.event-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.event-main-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.event-card {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.event-image {
+  margin-bottom: 25px;
+}
+
+.event-image-placeholder {
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 3rem;
+  gap: 10px;
+}
+
+.event-image-placeholder span {
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+.event-details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border-left: 4px solid #667eea;
+}
+
+.detail-icon {
+  font-size: 1.5rem;
+  color: #667eea;
+  min-width: 24px;
+}
+
+.detail-content h4 {
+  margin: 0 0 5px 0;
+  color: #333;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.detail-content p {
+  margin: 0;
+  color: #666;
+  font-weight: 600;
+}
+
+.event-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.apply-section, .event-info-card {
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.apply-section h3, .event-info-card h3 {
+  margin: 0 0 15px 0;
+  color: #333;
+  font-size: 1.3rem;
+  border-bottom: 2px solid #667eea;
+  padding-bottom: 10px;
+}
+
+.apply-section p {
+  margin: 0 0 20px 0;
+  color: #666;
+  line-height: 1.5;
+}
+
+.btn-large {
+  width: 100%;
+  padding: 15px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.auth-buttons .btn {
+  flex: 1;
+  min-width: 120px;
+}
+
+.already-applied {
+  text-align: center;
+}
+
+.already-applied h3 {
+  color: #28a745;
+  border-bottom-color: #28a745;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-item strong {
+  color: #333;
+  font-weight: 600;
+}
+
+.info-item span {
+  color: #666;
+  text-align: right;
+}
+
+.event-description, .event-rules, .event-prizes {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.event-description h2, .event-rules h2, .event-prizes h2 {
+  color: #333;
+  margin: 0 0 20px 0;
+  font-size: 1.8rem;
+  border-bottom: 2px solid #667eea;
+  padding-bottom: 10px;
+}
+
+.description-content p, .rules-content p, .prizes-content p {
+  color: #666;
+  line-height: 1.8;
+  margin: 0 0 15px 0;
+}
+
+.description-content p:last-child, .rules-content p:last-child, .prizes-content p:last-child {
+  margin-bottom: 0;
+}
+
+.additional-details {
+  margin-top: 20px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border-left: 4px solid #667eea;
+}
+
+.additional-details h4 {
+  margin: 0 0 10px 0;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.event-details-loading, .event-details-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+}
+
+.event-details-loading {
+  color: #667eea;
+}
+
+.event-details-error {
+  color: #dc3545;
+}
+
+.event-details-error h2 {
+  margin-bottom: 15px;
+  font-size: 2rem;
+}
+
+.event-details-error p {
+  margin-bottom: 25px;
+  font-size: 1.1rem;
+  max-width: 500px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(102, 126, 234, 0.3);
+  border-top: 4px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 968px) {
+  .event-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .event-sidebar {
+    order: -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .event-details {
+    padding: 15px;
+  }
+  
+  .event-header h1 {
+    font-size: 2rem;
+  }
+  
+  .event-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .event-card, .apply-section, .event-info-card, .event-description, .event-rules, .event-prizes {
+    padding: 20px;
+  }
+  
+  .event-details-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .detail-item {
+    padding: 12px;
+  }
+  
+  .auth-buttons {
+    flex-direction: column;
+  }
+  
+  .auth-buttons .btn {
+    min-width: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .event-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .event-subtitle {
+    font-size: 1rem;
+  }
+  
+  .event-card, .apply-section, .event-info-card, .event-description, .event-rules, .event-prizes {
+    padding: 15px;
+  }
+  
+  .detail-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+  
+  .info-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+  
+  .info-item span {
+    text-align: left;
+  }
+}
