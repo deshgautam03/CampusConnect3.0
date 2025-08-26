@@ -1,12 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { FaUser, FaSignOutAlt, FaCalendarAlt, FaHistory } from 'react-icons/fa';
+import { FaUser, FaSignOutAlt, FaCalendarAlt, FaHistory, FaUsers } from 'react-icons/fa';
 
 const Navbar = () => {
   const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -44,7 +58,10 @@ const Navbar = () => {
                 <li className="nav-item">
                   <Link to="/dashboard" className="nav-link">Dashboard</Link>
                 </li>
-                <li className="nav-item" style={{ position: 'relative' }}>
+                <li className="nav-item">
+                  <Link to="/events" className="nav-link">Events</Link>
+                </li>
+                <li className="nav-item" style={{ position: 'relative' }} ref={dropdownRef}>
                   <button
                     onClick={toggleDropdown}
                     style={{
@@ -102,41 +119,146 @@ const Navbar = () => {
                       </Link>
                       
                       {user?.userType === 'student' && (
-                        <Link
-                          to="/my-applications"
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '10px',
-                            padding: '12px 15px',
-                            color: '#333',
-                            textDecoration: 'none',
-                            borderBottom: '1px solid #eee'
-                          }}
-                          onClick={() => setShowDropdown(false)}
-                        >
-                          <FaHistory />
-                          My Applications
-                        </Link>
+                        <>
+                          <Link
+                            to="/my-applications"
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '10px',
+                              padding: '12px 15px',
+                              color: '#333',
+                              textDecoration: 'none',
+                              borderBottom: '1px solid #eee'
+                            }}
+                            onClick={() => setShowDropdown(false)}
+                          >
+                            <FaHistory />
+                            My Applications
+                          </Link>
+                          <Link
+                            to="/events"
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '10px',
+                              padding: '12px 15px',
+                              color: '#333',
+                              textDecoration: 'none',
+                              borderBottom: '1px solid #eee'
+                            }}
+                            onClick={() => setShowDropdown(false)}
+                          >
+                            <FaCalendarAlt />
+                            Browse Events
+                          </Link>
+                          <Link
+                            to="/my-applications"
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '10px',
+                              padding: '12px 15px',
+                              color: '#333',
+                              textDecoration: 'none',
+                              borderBottom: '1px solid #eee'
+                            }}
+                            onClick={() => setShowDropdown(false)}
+                          >
+                            <FaUsers />
+                            View My Applications
+                          </Link>
+                        </>
                       )}
                       
                       {user?.userType === 'coordinator' && (
-                        <Link
-                          to="/my-events"
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '10px',
-                            padding: '12px 15px',
-                            color: '#333',
-                            textDecoration: 'none',
-                            borderBottom: '1px solid #eee'
-                          }}
-                          onClick={() => setShowDropdown(false)}
-                        >
-                          <FaCalendarAlt />
-                          My Events
-                        </Link>
+                        <>
+                          <Link
+                            to="/my-events"
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '10px',
+                              padding: '12px 15px',
+                              color: '#333',
+                              textDecoration: 'none',
+                              borderBottom: '1px solid #eee'
+                            }}
+                            onClick={() => setShowDropdown(false)}
+                          >
+                            <FaCalendarAlt />
+                            My Events
+                          </Link>
+                          <Link
+                            to="/create-event"
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '10px',
+                              padding: '12px 15px',
+                              color: '#333',
+                              textDecoration: 'none',
+                              borderBottom: '1px solid #eee'
+                            }}
+                            onClick={() => setShowDropdown(false)}
+                          >
+                            <FaCalendarAlt />
+                            Create Event
+                          </Link>
+                        </>
+                      )}
+                      
+                      {user?.userType === 'faculty' && (
+                        <>
+                          <Link
+                            to="/events"
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '10px',
+                              padding: '12px 15px',
+                              color: '#333',
+                              textDecoration: 'none',
+                              borderBottom: '1px solid #eee'
+                            }}
+                            onClick={() => setShowDropdown(false)}
+                          >
+                            <FaCalendarAlt />
+                            View Events
+                          </Link>
+                          <Link
+                            to="/faculty/users"
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '10px',
+                              padding: '12px 15px',
+                              color: '#333',
+                              textDecoration: 'none',
+                              borderBottom: '1px solid #eee'
+                            }}
+                            onClick={() => setShowDropdown(false)}
+                          >
+                            <FaUsers />
+                            Manage Users
+                          </Link>
+                          <Link
+                            to="/events"
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '10px',
+                              padding: '12px 15px',
+                              color: '#333',
+                              textDecoration: 'none',
+                              borderBottom: '1px solid #eee'
+                            }}
+                            onClick={() => setShowDropdown(false)}
+                          >
+                            <FaUsers />
+                            View All Events
+                          </Link>
+                        </>
                       )}
                       
                       <button

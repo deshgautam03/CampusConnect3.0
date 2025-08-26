@@ -114,7 +114,7 @@ function App() {
             <Route 
               path="/event-participants/:id" 
               element={
-                <ProtectedRoute allowedRoles={['faculty']}>
+                <ProtectedRoute allowedRoles={['student', 'faculty', 'coordinator']}>
                   <EventParticipants />
                 </ProtectedRoute>
               } 

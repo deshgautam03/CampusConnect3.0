@@ -3,6 +3,7 @@ const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const { auth, authorize } = require('../middleware/auth');
 const { broadcast } = require('../utils/realtime');
+const { sendApplicationStatusEmail } = require('../utils/emailService');
 const Application = require('../models/Application');
 const Event = require('../models/Event');
 
@@ -17,6 +18,24 @@ router.get('/event/:eventId', auth, authorize('faculty', 'coordinator'), async (
     res.json(applications);
   } catch (error) {
     console.error('Error fetching event applications:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Get event participants for students (limited information)
+router.get('/event/:eventId/participants', auth, authorize('student', 'faculty', 'coordinator'), async (req, res) => {
+  try {
+    const applications = await Application.find({ 
+      event: req.params.eventId,
+      status: 'approved' // Only show approved participants
+    })
+      .populate('student', 'name department year studentId') // Limited student info
+      .populate('event', 'title')
+      .sort({ applicationDate: -1 });
+
+    res.json(applications);
+  } catch (error) {
+    console.error('Error fetching event participants:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -112,10 +131,12 @@ router.post('/', auth, authorize('student'), [
   }
 });
 
-// Update application status (Faculty/Coordinator only)
+// Update application status (Coordinator can approve/reject, Faculty can only reject)
 router.put('/:id/status', auth, authorize('faculty', 'coordinator'), [
   body('status', 'Status is required').isIn(['pending', 'approved', 'rejected', 'withdrawn']),
-  body('remarks', 'Remarks are optional').optional().isString()
+  body('remarks', 'Remarks are optional').optional().isString(),
+  body('rejectionReason', 'Rejection reason is required for rejections').optional().isString(),
+  body('adminPassword', 'Admin password is required for rejections').optional().isString()
 ], async (req, res) => {
   try {
     const errors = validationResult(req);
@@ -123,11 +144,39 @@ router.put('/:id/status', auth, authorize('faculty', 'coordinator'), [
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { status, remarks } = req.body;
+    const { status, remarks, rejectionReason, adminPassword } = req.body;
 
     const application = await Application.findById(req.params.id);
     if (!application) {
       return res.status(404).json({ message: 'Application not found' });
+    }
+
+    // Faculty can only reject applications, coordinators can approve/reject
+    if (req.user.userType === 'faculty' && status === 'approved') {
+      return res.status(403).json({ 
+        message: 'Faculty can only reject applications. Please contact a coordinator for approval.' 
+      });
+    }
+
+    // For rejections, require admin password
+    if (status === 'rejected') {
+      if (!adminPassword) {
+        return res.status(400).json({ 
+          message: 'Admin password is required to reject an application' 
+        });
+      }
+      
+      if (adminPassword !== 'Admin@123') {
+        return res.status(403).json({ 
+          message: 'Invalid admin password' 
+        });
+      }
+
+      if (!rejectionReason || rejectionReason.trim() === '') {
+        return res.status(400).json({ 
+          message: 'Rejection reason is required' 
+        });
+      }
     }
 
     // Update application
@@ -136,17 +185,123 @@ router.put('/:id/status', auth, authorize('faculty', 'coordinator'), [
     application.reviewedAt = new Date();
     application.reviewedBy = req.user.id;
 
+    if (status === 'rejected') {
+      application.rejectionReason = rejectionReason;
+      application.rejectionDate = new Date();
+      application.approvalDate = undefined;
+    } else if (status === 'approved') {
+      application.approvalDate = new Date();
+      application.rejectionDate = undefined;
+      application.rejectionReason = '';
+    }
+
     await application.save();
+
+    // Send email notification to student
+    try {
+      console.log('Attempting to send status update email for application:', application._id);
+      // Populate the application with student and event details for email
+      const populatedApplication = await Application.findById(application._id)
+        .populate('student', 'name email')
+        .populate('event', 'title');
+      
+      console.log('Populated application:', {
+        studentEmail: populatedApplication.student?.email,
+        eventTitle: populatedApplication.event?.title
+      });
+      
+      await sendApplicationStatusEmail(populatedApplication, status);
+      console.log('Status update email sent successfully');
+    } catch (emailError) {
+      console.error('Error sending status update email:', emailError);
+      // Don't fail the request if email fails
+    }
 
     res.json(application);
 
+    // Notify relevant users
     broadcast(
       { type: 'application_status', applicationId: application._id, status: application.status },
-      (user) => user.userType === 'faculty' || (user.userType === 'coordinator' && String(user._id) === String(eventDoc.coordinator))
+      (user) => user.userType === 'faculty' || (user.userType === 'coordinator' && String(user._id) === String(application.event.coordinator))
     );
 
   } catch (error) {
     console.error('Error updating application status:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Approve rejected application (Coordinator only)
+router.put('/:id/approve-rejected', auth, authorize('coordinator'), [
+  body('adminPassword', 'Admin password is required').not().isEmpty(),
+  body('remarks', 'Remarks are optional').optional().isString()
+], async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { adminPassword, remarks } = req.body;
+
+    if (adminPassword !== 'Admin@123') {
+      return res.status(403).json({ 
+        message: 'Invalid admin password' 
+      });
+    }
+
+    const application = await Application.findById(req.params.id);
+    if (!application) {
+      return res.status(404).json({ message: 'Application not found' });
+    }
+
+    if (application.status !== 'rejected') {
+      return res.status(400).json({ 
+        message: 'Only rejected applications can be approved' 
+      });
+    }
+
+    // Update application
+    application.status = 'approved';
+    application.remarks = remarks || application.remarks;
+    application.reviewedAt = new Date();
+    application.reviewedBy = req.user.id;
+    application.approvalDate = new Date();
+    application.rejectionDate = undefined;
+    application.rejectionReason = '';
+
+    await application.save();
+
+    // Send email notification to student
+    try {
+      console.log('Attempting to send approval email for application:', application._id);
+      // Populate the application with student and event details for email
+      const populatedApplication = await Application.findById(application._id)
+        .populate('student', 'name email')
+        .populate('event', 'title');
+      
+      console.log('Populated application for approval:', {
+        studentEmail: populatedApplication.student?.email,
+        eventTitle: populatedApplication.event?.title
+      });
+      
+      await sendApplicationStatusEmail(populatedApplication, 'approved');
+      console.log('Approval email sent successfully');
+    } catch (emailError) {
+      console.error('Error sending approval email:', emailError);
+      // Don't fail the request if email fails
+    }
+
+    res.json(application);
+
+    // Notify relevant users
+    broadcast(
+      { type: 'application_status', applicationId: application._id, status: application.status },
+      (user) => user.userType === 'faculty' || (user.userType === 'coordinator' && String(user._id) === String(application.event.coordinator))
+    );
+
+  } catch (error) {
+    console.error('Error approving rejected application:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { FaEdit, FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaDollarSign, FaTrophy, FaFileAlt } from 'react-icons/fa';
@@ -110,6 +110,67 @@ const EditEvent = () => {
             <p style={{ margin: '10px 0 0 0', opacity: '0.9', fontSize: '1.1rem' }}>
               Update event details and information
             </p>
+            
+            {/* Action Buttons */}
+            <div style={{ 
+              marginTop: '20px',
+              display: 'flex',
+              gap: '15px',
+              justifyContent: 'center',
+              flexWrap: 'wrap'
+            }}>
+              <Link
+                to={`/event/${id}`}
+                style={{
+                  background: 'rgba(255,255,255,0.2)',
+                  color: 'white',
+                  padding: '10px 20px',
+                  borderRadius: '8px',
+                  textDecoration: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  fontWeight: '600',
+                  border: '1px solid rgba(255,255,255,0.3)',
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = 'rgba(255,255,255,0.3)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = 'rgba(255,255,255,0.2)';
+                }}
+              >
+                <FaUsers />
+                View Event
+              </Link>
+              
+              <Link
+                to={`/event-participants/${id}`}
+                style={{
+                  background: 'rgba(255,255,255,0.2)',
+                  color: 'white',
+                  padding: '10px 20px',
+                  borderRadius: '8px',
+                  textDecoration: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  fontWeight: '600',
+                  border: '1px solid rgba(255,255,255,0.3)',
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = 'rgba(255,255,255,0.3)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = 'rgba(255,255,255,0.2)';
+                }}
+              >
+                <FaUsers />
+                View Participants
+              </Link>
+            </div>
           </div>
 
           {/* Form */}

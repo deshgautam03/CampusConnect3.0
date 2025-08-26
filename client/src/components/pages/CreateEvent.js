@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { FaPlus, FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaDollarSign, FaTrophy, FaFileAlt } from 'react-icons/fa';
+import { FaPlus, FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaDollarSign, FaTrophy, FaFileAlt, FaEye } from 'react-icons/fa';
 
 const defaultForm = {
   title: '',
@@ -30,6 +31,9 @@ const CreateEvent = () => {
     setForm(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
   };
 
+  const [createdEventId, setCreatedEventId] = useState(null);
+  const [showSuccess, setShowSuccess] = useState(false);
+
   const onSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -37,8 +41,10 @@ const CreateEvent = () => {
     if (image) data.append('image', image);
     try {
       setSubmitting(true);
-      await axios.post('/api/events', data, { headers: { 'Content-Type': 'multipart/form-data' } });
+      const response = await axios.post('/api/events', data, { headers: { 'Content-Type': 'multipart/form-data' } });
       toast.success('Event created successfully!');
+      setCreatedEventId(response.data._id);
+      setShowSuccess(true);
       setForm(defaultForm);
       setImage(null);
     } catch (e) {
@@ -498,6 +504,101 @@ const CreateEvent = () => {
                 </button>
               </div>
             </form>
+
+            {/* Success Message */}
+            {showSuccess && (
+              <div style={{
+                background: '#d4edda',
+                border: '1px solid #c3e6cb',
+                borderRadius: '15px',
+                padding: '30px',
+                marginTop: '30px',
+                textAlign: 'center'
+              }}>
+                <div style={{
+                  fontSize: '3rem',
+                  color: '#28a745',
+                  marginBottom: '20px'
+                }}>
+                  🎉
+                </div>
+                <h3 style={{
+                  color: '#155724',
+                  marginBottom: '15px',
+                  fontSize: '1.5rem'
+                }}>
+                  Event Created Successfully!
+                </h3>
+                <p style={{
+                  color: '#155724',
+                  marginBottom: '25px',
+                  fontSize: '1.1rem'
+                }}>
+                  Your event has been created and is now visible to students. You can manage applications and view participants.
+                </p>
+                
+                <div style={{
+                  display: 'flex',
+                  gap: '15px',
+                  justifyContent: 'center',
+                  flexWrap: 'wrap'
+                }}>
+                  <Link
+                    to={`/event/${createdEventId}`}
+                    style={{
+                      background: '#007bff',
+                      color: 'white',
+                      padding: '12px 24px',
+                      borderRadius: '8px',
+                      textDecoration: 'none',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      fontWeight: '600'
+                    }}
+                  >
+                    <FaEye />
+                    View Event
+                  </Link>
+                  
+                  <Link
+                    to={`/event-participants/${createdEventId}`}
+                    style={{
+                      background: '#28a745',
+                      color: 'white',
+                      padding: '12px 24px',
+                      borderRadius: '8px',
+                      textDecoration: 'none',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      fontWeight: '600'
+                    }}
+                  >
+                    <FaUsers />
+                    View Participants
+                  </Link>
+                  
+                  <button
+                    onClick={() => {
+                      setShowSuccess(false);
+                      setCreatedEventId(null);
+                    }}
+                    style={{
+                      background: '#6c757d',
+                      color: 'white',
+                      padding: '12px 24px',
+                      borderRadius: '8px',
+                      border: 'none',
+                      cursor: 'pointer',
+                      fontWeight: '600'
+                    }}
+                  >
+                    Create Another Event
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

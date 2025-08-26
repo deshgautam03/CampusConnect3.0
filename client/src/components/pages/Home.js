@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaClock, FaEye } from 'react-icons/fa';
+import { FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaClock, FaEye, FaEnvelope, FaPhone, FaLinkedin } from 'react-icons/fa';
 import axios from 'axios';
 
 const Home = () => {
@@ -240,6 +240,10 @@ const Home = () => {
                         <FaEye style={{ marginRight: '5px' }} />
                         View Event
                       </Link>
+                      <Link to={`/event-participants/${event._id}`} className="btn btn-secondary">
+                        <FaUsers style={{ marginRight: '5px' }} />
+                        View Participants
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -255,22 +259,77 @@ const Home = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section style={{ padding: '60px 0', background: 'linear-gradient(135deg, #2c3e50 0%, #34495e 100%)', color: 'white' }}>
-        <div className="container" style={{ textAlign: 'center' }}>
-          <h2 style={{ fontSize: '2.5rem', marginBottom: '20px' }}>
-            Ready to Get Started?
-          </h2>
-          <p style={{ fontSize: '1.2rem', marginBottom: '30px', opacity: '0.9' }}>
-            Join thousands of students and coordinators already using our platform
-          </p>
-          <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link to="/events" className="btn btn-primary">
-              Browse Events
-            </Link>
+      {/* Footer */}
+      <footer style={{ 
+        background: '#2c3e50', 
+        color: 'white', 
+        padding: '40px 0 20px 0',
+        marginTop: 'auto'
+      }}>
+        <div className="container">
+          <div className="row">
+            <div className="col-md-6">
+              <h4 style={{ marginBottom: '20px', color: '#ecf0f1' }}>Contact Us</h4>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <FaEnvelope style={{ color: '#3498db', fontSize: '18px' }} />
+                  <a 
+                    href="mailto:deshgautam03@gmail.com" 
+                    style={{ color: '#ecf0f1', textDecoration: 'none' }}
+                    onMouseOver={(e) => e.target.style.color = '#3498db'}
+                    onMouseOut={(e) => e.target.style.color = '#ecf0f1'}
+                  >
+                    deshgautam03@gmail.com
+                  </a>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <FaPhone style={{ color: '#3498db', fontSize: '18px' }} />
+                  <a 
+                    href="tel:+919027680644" 
+                    style={{ color: '#ecf0f1', textDecoration: 'none' }}
+                    onMouseOver={(e) => e.target.style.color = '#3498db'}
+                    onMouseOut={(e) => e.target.style.color = '#ecf0f1'}
+                  >
+                    +91 9027680644
+                  </a>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <FaLinkedin style={{ color: '#3498db', fontSize: '18px' }} />
+                  <a 
+                    href="https://www.linkedin.com/in/desh-deepak-gautam-a68a6a235?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    style={{ color: '#ecf0f1', textDecoration: 'none' }}
+                    onMouseOver={(e) => e.target.style.color = '#3498db'}
+                    onMouseOut={(e) => e.target.style.color = '#ecf0f1'}
+                  >
+                    LinkedIn Profile
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-6">
+              <h4 style={{ marginBottom: '20px', color: '#ecf0f1' }}>About CampusConnect</h4>
+              <p style={{ color: '#bdc3c7', lineHeight: '1.6' }}>
+                CampusConnect is a comprehensive event management platform designed to streamline 
+                campus events, facilitate student participation, and enhance coordination between 
+                students, coordinators, and faculty members.
+              </p>
+            </div>
+          </div>
+          <hr style={{ borderColor: '#34495e', margin: '30px 0 20px 0' }} />
+          <div style={{ 
+            textAlign: 'center', 
+            color: '#bdc3c7', 
+            fontSize: '14px' 
+          }}>
+            <p style={{ margin: '0' }}>
+              © {new Date().getFullYear()} CampusConnect. All rights reserved. | 
+              Developed by Desh Deepak Gautam
+            </p>
           </div>
         </div>
-      </section>
+      </footer>
     </div>
   );
 };

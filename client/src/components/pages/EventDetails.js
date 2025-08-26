@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaClock, FaUser, FaArrowLeft } from 'react-icons/fa';
+import { FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaClock, FaUser, FaArrowLeft, FaEdit } from 'react-icons/fa';
 import axios from 'axios';
 import './EventDetails.css';
 
@@ -231,6 +231,33 @@ const EventDetails = () => {
                 <span>{event.year || 'All Years'}</span>
               </div>
             </div>
+
+            {/* Action Buttons for Coordinators and Faculty */}
+            {(user?.userType === 'coordinator' || user?.userType === 'faculty') && (
+              <div className="coordinator-actions">
+                <h3>Event Management</h3>
+                <div className="action-buttons">
+                  <Link 
+                    to={`/event-participants/${event._id}`} 
+                    className="btn btn-primary"
+                    style={{ width: '100%', marginBottom: '10px' }}
+                  >
+                    <FaUsers style={{ marginRight: '8px' }} />
+                    View Participants
+                  </Link>
+                  {user?.userType === 'coordinator' && (
+                    <Link 
+                      to={`/edit-event/${event._id}`} 
+                      className="btn btn-secondary"
+                      style={{ width: '100%' }}
+                    >
+                      <FaEdit style={{ marginRight: '8px' }} />
+                      Edit Event
+                    </Link>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -245,6 +272,16 @@ const EventDetails = () => {
               </div>
             )}
           </div>
+        </div>
+
+        {/* View Participants Section for All Users */}
+        <div className="view-participants-section">
+          <h2>Event Participants</h2>
+          <p>See who's participating in this event and track the current participation status.</p>
+          <Link to={`/event-participants/${event._id}`} className="btn btn-primary btn-large">
+            <FaUsers style={{ marginRight: '10px' }} />
+            View Participants
+          </Link>
         </div>
 
         {event.rules && (

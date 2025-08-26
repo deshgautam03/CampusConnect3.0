@@ -3,12 +3,12 @@ const nodemailer = require('nodemailer');
 // Create transporter
 const createTransporter = () => {
   return nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: process.env.EMAIL_PORT,
+    host: process.env.EMAIL_HOST || 'smtp.gmail.com',
+    port: process.env.EMAIL_PORT || 587,
     secure: false,
     auth: {
-      user: "deshgautam05@gmail.com",
-      pass: "wada ngtn mxzi sqzo"
+      user: process.env.EMAIL_USER || "deshgautam05@gmail.com",
+      pass: process.env.EMAIL_PASS || "wada ngtn mxzi sqzo"
     }
   });
 };
@@ -19,15 +19,17 @@ const sendEventNotification = async (event) => {
     // In a real application, you would get this list from faculty coordinator
     // For demo purposes, we'll use a sample list
     const studentEmails = [
-      'xmnub567@gmail.com',
-      'deshgautam03@gmail.com',
-      'tanyaabrol12@gmail.com'
+      // 'xmnub567@gmail.com',
+      // 'deshgautam03@gmail.com',
+      // 'tanyaabrol12@gmail.com',
+      "deshgautam06@gmail.com",
+      "deshgautam05@gmail.com"
     ];
 
     const transporter = createTransporter();
 
     const mailOptions = {
-      from:"deshgautam05@gmail.com",
+      from: process.env.EMAIL_USER || "deshgautam05@gmail.com",
       subject: `New Event: ${event.title}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -92,10 +94,10 @@ const sendEmail = async (to, subject, html) => {
     const transporter = createTransporter();
     
     const mailOptions = {
-      from:'"Desh deepak"<xmnub567@gmail.com>',
-      to:"xmnub567@gmail.com",
-      subject:'hellooo',
-      html:"<b>Hello</b>"
+      from: `"Campus Events"<${process.env.EMAIL_USER || 'deshgautam05@gmail.com'}>`,
+      to: "deshgautam05@gmail.com",
+      subject: subject,
+      html: html
     };
 
     const result = await transporter.sendMail(mailOptions);
@@ -109,30 +111,36 @@ const sendEmail = async (to, subject, html) => {
 // Send application status update email
 const sendApplicationStatusEmail = async (application, status) => {
   try {
+    console.log('Sending application status email:', { 
+      studentEmail: application.student?.email, 
+      eventTitle: application.event?.title, 
+      status 
+    });
+    
     const transporter = createTransporter();
     
     const statusMessages = {
       approved: {
         subject: 'Application Approved!',
         color: '#27ae60',
-        message: 'Congratulations! Your application has been approved.'
+        message: 'Congratulations! Your participation has been approved.'
       },
       rejected: {
         subject: 'Application Update',
         color: '#e74c3c',
-        message: 'Your application status has been updated.'
+        message: 'Your participation status has been rejected.'
       },
       pending: {
         subject: 'Application Received',
         color: '#f39c12',
-        message: 'Your application has been received and is under review.'
+        message: 'Your participation has been received and is under review.'
       }
     };
 
     const statusInfo = statusMessages[status];
     
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: process.env.EMAIL_USER || "deshgautam05@gmail.com",
       to: application.student.email,
       subject: `${statusInfo.subject} - ${application.event.title}`,
       html: `
@@ -155,7 +163,9 @@ const sendApplicationStatusEmail = async (application, status) => {
     };
 
     const result = await transporter.sendMail(mailOptions);
+    console.log("statsu success");
     return result;
+
   } catch (error) {
     console.error('Error sending application status email:', error);
     throw error;

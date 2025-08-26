@@ -64,6 +64,16 @@ router.post('/register', [
       userFields.designation = req.body.designation;
     }
 
+    // Add coordinator-specific validation
+    if (userType === 'coordinator') {
+      if (!req.body.adminPassword) {
+        return res.status(400).json({ message: 'Admin password is required for coordinator registration' });
+      }
+      if (req.body.adminPassword !== 'Admin@123') {
+        return res.status(403).json({ message: 'Invalid admin password. Only authorized administrators can create coordinator accounts.' });
+      }
+    }
+
     user = new User(userFields);
     await user.save();
 

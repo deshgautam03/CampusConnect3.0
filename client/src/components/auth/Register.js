@@ -13,7 +13,8 @@ const Register = () => {
     studentId: '',
     department: '',
     year: '',
-    phone: ''
+    phone: '',
+    adminPassword: ''
   });
   const [loading, setLoading] = useState(false);
 
@@ -55,6 +56,14 @@ const Register = () => {
       if (formData.userType === 'student') {
         userData.studentId = formData.studentId;
         userData.year = parseInt(formData.year);
+      }
+
+      if (formData.userType === 'coordinator') {
+        if (!formData.adminPassword) {
+          toast.error('Admin password is required for coordinator registration');
+          return;
+        }
+        userData.adminPassword = formData.adminPassword;
       }
 
       const result = await register(userData);
@@ -210,6 +219,28 @@ const Register = () => {
                   </div>
                 </div>
               </div>
+
+              {formData.userType === 'coordinator' && (
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label className="form-label">Admin Password *</label>
+                      <input
+                        type="password"
+                        name="adminPassword"
+                        className="form-control"
+                        value={formData.adminPassword}
+                        onChange={handleChange}
+                        required={formData.userType === 'coordinator'}
+                        placeholder="Enter admin password"
+                      />
+                      <small className="form-text text-muted">
+                        Only authorized administrators can create coordinator accounts
+                      </small>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               <div className="row">
                 <div className="col-md-6">

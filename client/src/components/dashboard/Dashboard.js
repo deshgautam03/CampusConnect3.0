@@ -34,11 +34,29 @@ const Dashboard = () => {
             const events = myEventsResponse.data;
             console.log('Coordinator events received:', events);
             setRecentEvents(events.slice(0, 5)); // Show coordinator's last 5 events
-            setStats({ totalEvents: events.length });
+            
+            // Calculate total participants across all events
+            let totalParticipants = 0;
+            for (const event of events) {
+              try {
+                const applicationsResponse = await axios.get(`/api/applications/event/${event._id}`, {
+                  headers: { Authorization: `Bearer ${token}` }
+                });
+                const approvedApplications = applicationsResponse.data.filter(app => app.status === 'approved');
+                totalParticipants += approvedApplications.length;
+              } catch (error) {
+                console.error(`Error fetching applications for event ${event._id}:`, error);
+              }
+            }
+            
+            setStats({ 
+              totalEvents: events.length,
+              totalParticipants: totalParticipants
+            });
           } catch (error) {
             console.error('Error fetching coordinator events:', error);
             setRecentEvents([]);
-            setStats({ totalEvents: 0 });
+            setStats({ totalEvents: 0, totalParticipants: 0 });
           }
         } else if (user?.userType === 'student') {
           const eventsResponse = await axios.get('/api/events');
@@ -115,6 +133,9 @@ const Dashboard = () => {
                 <Link to={`/event/${event._id}`} className="btn btn-outline">
                   View Details
                 </Link>
+                <Link to={`/event-participants/${event._id}`} className="btn btn-secondary">
+                  <FaUsers /> View Participants
+                </Link>
               </div>
             ))}
           </div>
@@ -141,7 +162,7 @@ const Dashboard = () => {
         <div className="stat-card">
           <FaUsers className="stat-icon" />
           <div className="stat-info">
-            <h3>0</h3>
+            <h3>{stats.totalParticipants || 0}</h3>
             <p>Total Participants</p>
           </div>
         </div>
@@ -157,6 +178,11 @@ const Dashboard = () => {
             <Link to="/my-events" className="btn btn-secondary">
               <FaCalendarAlt /> My Events
             </Link>
+            {/* {recentEvents.length > 0 && (
+              <Link to={`/event-participants/${recentEvents[0]._id}`} className="btn btn-outline">
+                <FaUsers /> View Participants
+              </Link>
+            )} */}
           </div>
         </div>
 
@@ -175,6 +201,9 @@ const Dashboard = () => {
                   <div className="event-actions">
                     <Link to={`/event/${event._id}`} className="btn btn-outline">
                       <FaEye /> View Details
+                    </Link>
+                    <Link to={`/event-participants/${event._id}`} className="btn btn-primary">
+                      <FaUsers /> View Participants
                     </Link>
                     <Link to={`/edit-event/${event._id}`} className="btn btn-secondary">
                       <FaEdit /> Edit Event
@@ -249,6 +278,11 @@ const Dashboard = () => {
             <Link to="/events" className="btn btn-secondary">
               <FaCalendarAlt /> View All Events
             </Link>
+            {recentEvents.length > 0 && (
+              <Link to={`/event-participants/${recentEvents[0]._id}`} className="btn btn-outline">
+                <FaUsers /> View Participants
+              </Link>
+            )}
           </div>
         </div>
 

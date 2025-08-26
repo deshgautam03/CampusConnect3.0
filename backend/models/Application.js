@@ -49,11 +49,21 @@ const applicationSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  rejectionReason: {
+    type: String,
+    default: ''
+  },
   reviewedBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   },
   reviewedAt: {
+    type: Date
+  },
+  rejectionDate: {
+    type: Date
+  },
+  approvalDate: {
     type: Date
   }
 });

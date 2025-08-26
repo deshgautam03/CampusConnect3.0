@@ -181,6 +181,36 @@ const ApplyForEvent = () => {
                 <span><FaCalendarAlt /> {new Date(event.startDate).toLocaleDateString()}</span>
                 <span><FaMapMarkerAlt /> {event.venue}</span>
               </div>
+              
+              {/* View Participants Button */}
+              <div style={{ marginTop: '20px' }}>
+                <Link
+                  to={`/event-participants/${event._id}`}
+                  style={{
+                    background: 'rgba(255,255,255,0.2)',
+                    color: 'white',
+                    padding: '8px 16px',
+                    borderRadius: '6px',
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    border: '1px solid rgba(255,255,255,0.3)',
+                    transition: 'all 0.3s ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = 'rgba(255,255,255,0.3)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = 'rgba(255,255,255,0.2)';
+                  }}
+                >
+                  <FaUsers />
+                  View Current Participants
+                </Link>
+              </div>
             </div>
           </div>
 

@@ -257,6 +257,14 @@ const Events = () => {
                         <FaEye style={{ marginRight: '5px' }} />
                         View Details
                       </Link>
+                      <Link 
+                        to={`/event-participants/${event._id}`} 
+                        className="btn btn-secondary"
+                        style={{ flex: 1, textAlign: 'center' }}
+                      >
+                        <FaUsers style={{ marginRight: '5px' }} />
+                        View Participants
+                      </Link>
                     </div>
                   </div>
                 </div>

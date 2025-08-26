@@ -199,6 +199,88 @@
   text-align: right;
 }
 
+/* Coordinator Actions */
+.coordinator-actions {
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.coordinator-actions h3 {
+  margin: 0 0 20px 0;
+  color: #333;
+  font-size: 1.3rem;
+  border-bottom: 2px solid #667eea;
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+.coordinator-actions .action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.coordinator-actions .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.coordinator-actions .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* View Participants Section */
+.view-participants-section {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.view-participants-section h2 {
+  color: #333;
+  margin: 0 0 15px 0;
+  font-size: 1.8rem;
+  border-bottom: 2px solid #667eea;
+  padding-bottom: 10px;
+}
+
+.view-participants-section p {
+  color: #666;
+  line-height: 1.6;
+  margin: 0 0 25px 0;
+  font-size: 1.1rem;
+}
+
+.view-participants-section .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 30px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.view-participants-section .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
 .event-description, .event-rules, .event-prizes {
   background: white;
   border-radius: 15px;

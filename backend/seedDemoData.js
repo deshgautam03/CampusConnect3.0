@@ -20,18 +20,60 @@ const seedData = async () => {
     await Event.deleteMany({});
     console.log('🗑️  Cleared existing data');
 
-    // Create faculty user
-    const facultyUser = new User({
-      name: 'Faculty Coordinator',
-      email: 'faculty@campus.edu',
-      password: 'faculty123',
-      userType: 'faculty',
-      phone: '+1234567890',
-      department: 'Computer Science',
-      designation: 'Professor'
-    });
-    await facultyUser.save();
-    console.log('👨‍🏫 Created faculty user');
+    // Create faculty users for each department
+    const facultyUsers = [
+      {
+        name: 'Dr. Sarah Johnson',
+        email: 'faculty.it@campus.edu',
+        password: 'faculty123',
+        userType: 'faculty',
+        phone: '+1234567890',
+        department: 'Information Technology',
+        designation: 'Associate Professor'
+      },
+      {
+        name: 'Prof. Michael Chen',
+        email: 'faculty.cs@campus.edu',
+        password: 'faculty123',
+        userType: 'faculty',
+        phone: '+1234567891',
+        department: 'Computer Science',
+        designation: 'Professor'
+      },
+      {
+        name: 'Dr. Emily Rodriguez',
+        email: 'faculty.ec@campus.edu',
+        password: 'faculty123',
+        userType: 'faculty',
+        phone: '+1234567892',
+        department: 'Electronics & Communication',
+        designation: 'Assistant Professor'
+      },
+      {
+        name: 'Prof. David Thompson',
+        email: 'faculty.me@campus.edu',
+        password: 'faculty123',
+        userType: 'faculty',
+        phone: '+1234567893',
+        department: 'Mechanical Engineering',
+        designation: 'Professor'
+      },
+      {
+        name: 'Dr. Lisa Wang',
+        email: 'faculty.bpharm@campus.edu',
+        password: 'faculty123',
+        userType: 'faculty',
+        phone: '+1234567894',
+        department: 'BPharm',
+        designation: 'Associate Professor'
+      }
+    ];
+
+    for (const facultyData of facultyUsers) {
+      const facultyUser = new User(facultyData);
+      await facultyUser.save();
+      console.log(`👨‍🏫 Created faculty user for ${facultyData.department}`);
+    }
 
     // Create demo coordinator
     const coordinatorUser = new User({
@@ -40,7 +82,7 @@ const seedData = async () => {
       password: 'coordinator123',
       userType: 'coordinator',
       department: 'Computer Science',
-      phone: '+1234567891'
+      phone: '+1234567895'
     });
     await coordinatorUser.save();
     console.log('👨‍💼 Created demo coordinator');
@@ -52,7 +94,7 @@ const seedData = async () => {
       password: 'student123',
       userType: 'student',
       department: 'Computer Science',
-      phone: '+1234567892',
+      phone: '+1234567896',
       studentId: 'CS2024001',
       year: 2
     });
@@ -126,9 +168,14 @@ const seedData = async () => {
 
     console.log('\n✅ Database seeding completed successfully!');
     console.log('\n📋 Demo Accounts:');
-    console.log('👨‍🏫 Faculty: faculty@campus.edu / faculty123');
+    console.log('👨‍🏫 IT Faculty: faculty.it@campus.edu / faculty123');
+    console.log('👨‍🏫 CS Faculty: faculty.cs@campus.edu / faculty123');
+    console.log('👨‍🏫 EC Faculty: faculty.ec@campus.edu / faculty123');
+    console.log('👨‍🏫 ME Faculty: faculty.me@campus.edu / faculty123');
+    console.log('👨‍🏫 BPharm Faculty: faculty.bpharm@campus.edu / faculty123');
     console.log('👨‍💼 Coordinator: coordinator@campus.edu / coordinator123');
     console.log('👨‍🎓 Student: student@campus.edu / student123');
+    console.log('\n🔑 Admin Password for rejections: Admin@123');
     console.log('\n🚀 You can now start the application and test the features!');
 
     process.exit(0);
