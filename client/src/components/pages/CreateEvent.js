@@ -57,7 +57,7 @@ const CreateEvent = () => {
   return (
     <div style={{ 
       minHeight: 'calc(100vh - 80px)', 
-      background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+      background: '#f8fafc',
       padding: '20px 0'
     }}>
       <div className="container">
@@ -71,7 +71,7 @@ const CreateEvent = () => {
         }}>
           {/* Header */}
           <div style={{ 
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', 
+            background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #0d9488 100%)', 
             color: 'white', 
             padding: '30px', 
             textAlign: 'center' 
@@ -493,7 +493,7 @@ const CreateEvent = () => {
                     fontSize: '18px',
                     borderRadius: '10px',
                     border: 'none',
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    background: 'linear-gradient(135deg, #0f172a, #0d9488)',
                     color: 'white',
                     cursor: submitting ? 'not-allowed' : 'pointer',
                     opacity: submitting ? 0.7 : 1,

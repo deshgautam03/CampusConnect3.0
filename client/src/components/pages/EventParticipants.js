@@ -362,118 +362,92 @@ const EventParticipants = () => {
   }
 
   return (
-    <div style={{ padding: '20px 0', minHeight: 'calc(100vh - 80px)' }}>
-      <div className="container">
-        {/* Header */}
-        <div style={{ marginBottom: '30px' }}>
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
-            alignItems: 'center', 
-            marginBottom: '20px' 
-          }}>
-            <div>
-              <h1 style={{ color: '#2c3e50', marginBottom: '10px' }}>
-                <FaUsers style={{ marginRight: '15px' }} />
-                Event Participants
-              </h1>
-              <h2 style={{ color: '#34495e', margin: '0' }}>{event.title}</h2>
-            </div>
-            
-            {/* Print Buttons - Only for Coordinators and Faculty */}
-            {user?.userType !== 'student' && (
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <button
-                  onClick={() => handlePrint(false)}
-                  style={{
-                    background: '#3498db',
-                    color: 'white',
-                    border: 'none',
-                    padding: '12px 20px',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                    fontSize: '14px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
-                    transition: 'all 0.3s ease'
-                  }}
-                  onMouseOver={(e) => {
-                    e.target.style.background = '#2980b9';
-                    e.target.style.transform = 'translateY(-1px)';
-                  }}
-                  onMouseOut={(e) => {
-                    e.target.style.background = '#3498db';
-                    e.target.style.transform = 'translateY(0)';
-                  }}
-                >
-                  <FaPrint />
-                  Print All
-                </button>
-                
-                <button
-                  onClick={() => handlePrint(true)}
-                  style={{
-                    background: '#27ae60',
-                    color: 'white',
-                    border: 'none',
-                    padding: '12px 20px',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                    fontSize: '14px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
-                    transition: 'all 0.3s ease'
-                  }}
-                  onMouseOver={(e) => {
-                    e.target.style.background = '#229954';
-                    e.target.style.transform = 'translateY(-1px)';
-                  }}
-                  onMouseOut={(e) => {
-                    e.target.style.background = '#27ae60';
-                    e.target.style.transform = 'translateY(0)';
-                  }}
-                >
-                  <FaPrint />
-                  Print Approved Only
-                </button>
-              </div>
-            )}
+    <div style={{ minHeight: 'calc(100vh - 80px)' }}>
+      <section style={{
+        background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #0d9488 100%)',
+        color: 'white',
+        padding: '36px 0 20px 0'
+      }}>
+        <div className="container">
+          <h1 style={{ marginBottom: '6px' }}>
+            <FaUsers style={{ marginRight: '10px' }} /> Event Participants
+          </h1>
+          <h2 style={{ margin: 0, opacity: 0.9 }}>{event.title}</h2>
+        </div>
+      </section>
+      <div className="container" style={{ padding: '20px 0' }}>
+        
+        {user?.userType !== 'student' && (
+          <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', marginTop: '16px' }}>
+            <button
+              onClick={() => handlePrint(false)}
+              style={{
+                background: 'linear-gradient(135deg, #0f172a, #0d9488)',
+                color: 'white',
+                border: 'none',
+                padding: '12px 20px',
+                borderRadius: '10px',
+                cursor: 'pointer',
+                fontSize: '14px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                boxShadow: '0 2px 5px rgba(0,0,0,0.1)'
+              }}
+            >
+              <FaPrint /> Print All
+            </button>
+            <button
+              onClick={() => handlePrint(true)}
+              style={{
+                background: '#16a34a',
+                color: 'white',
+                border: 'none',
+                padding: '12px 20px',
+                borderRadius: '10px',
+                cursor: 'pointer',
+                fontSize: '14px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                boxShadow: '0 2px 5px rgba(0,0,0,0.1)'
+              }}
+            >
+              <FaPrint /> Print Approved Only
+            </button>
           </div>
-          
-          {/* Role Indicator */}
-          {user?.userType !== 'student' && (
+        )}
+
+        
+        {user?.userType !== 'student' && (
+          <div style={{ 
+            background: '#e8f5e8', 
+            border: '1px solid #27ae60', 
+            borderRadius: '8px', 
+            padding: '15px', 
+            margin: '20px 0',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px'
+          }}>
             <div style={{ 
-              background: '#e8f5e8', 
-              border: '1px solid #27ae60', 
-              borderRadius: '8px', 
-              padding: '15px', 
-              marginBottom: '20px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px'
+              background: '#16a34a', 
+              color: 'white', 
+              padding: '5px 10px', 
+              borderRadius: '999px', 
+              fontSize: '12px',
+              fontWeight: '700'
             }}>
-              <div style={{ 
-                background: '#27ae60', 
-                color: 'white', 
-                padding: '5px 10px', 
-                borderRadius: '15px', 
-                fontSize: '12px',
-                fontWeight: '600'
-              }}>
-                {user?.userType === 'faculty' ? 'Faculty' : 'Coordinator'}
-              </div>
-              <span style={{ color: '#2c3e50', fontSize: '14px' }}>
-                {user?.userType === 'faculty' 
-                  ? 'You can only reject applications. Contact coordinators for approvals.' 
-                  : 'You can approve or reject applications for this event.'
-                }
-              </span>
+              {user?.userType === 'faculty' ? 'Faculty' : 'Coordinator'}
             </div>
-          )}
+            <span style={{ color: '#2c3e50', fontSize: '14px' }}>
+              {user?.userType === 'faculty' 
+                ? 'You can only reject applications. Contact coordinators for approvals.' 
+                : 'You can approve or reject applications for this event.'
+              }
+            </span>
+          </div>
+        )}
           
           {user?.userType === 'student' && (
             <div style={{ 
@@ -509,7 +483,6 @@ const EventParticipants = () => {
             marginBottom: '30px'
           }}>
             {user?.userType === 'student' ? (
-              // Student view - only show approved participants
               <div style={{
                 background: 'white',
                 padding: '20px',
@@ -523,7 +496,6 @@ const EventParticipants = () => {
                 <div style={{ color: '#6c757d' }}>Approved Participants</div>
               </div>
             ) : (
-              // Faculty/Coordinator view - show all statistics
               <>
                 <div style={{
                   background: 'white',
@@ -579,9 +551,7 @@ const EventParticipants = () => {
               </>
             )}
           </div>
-        </div>
-
-        {/* Applications List */}
+        
         {applications.length === 0 ? (
           <div style={{ 
             textAlign: 'center', 
@@ -866,8 +836,8 @@ const EventParticipants = () => {
         )}
       </div>
 
-      {/* Rejection Modal - Only for Faculty/Coordinators */}
-      {user?.userType !== 'student' && showRejectModal && (
+      <div>
+        {user?.userType !== 'student' && showRejectModal ? (
         <div style={{
           position: 'fixed',
           top: 0,
@@ -976,10 +946,9 @@ const EventParticipants = () => {
             </div>
           </div>
         </div>
-      )}
+        ) : null}
 
-      {/* Approve Rejected Application Modal - Only for Coordinators */}
-      {user?.userType !== 'student' && showApproveModal && (
+        {user?.userType !== 'student' && showApproveModal ? (
         <div style={{
           position: 'fixed',
           top: 0,
@@ -1087,7 +1056,8 @@ const EventParticipants = () => {
             </div>
           </div>
         </div>
-      )}
+        ) : null}
+      </div>
     </div>
   );
 };

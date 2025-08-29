@@ -96,8 +96,52 @@ const Profile = () => {
   }
 
   return (
-    <div className="profile-container">
-      <div className="profile-header">
+    <div className="profile-container" style={{ minHeight: 'calc(100vh - 80px)' }}>
+      <div style={{
+        background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #0d9488 100%)',
+        color: 'white',
+        padding: '28px 0'
+      }}>
+        <div className="container" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div className="profile-avatar"><FaUser size={48} /></div>
+          <div>
+            <h1 style={{ margin: 0 }}>{user.name}</h1>
+            <div style={{ opacity: 0.9 }}>{getUserTypeDisplay()}</div>
+          </div>
+          <div style={{ marginLeft: 'auto' }}>
+            {!isEditing ? (
+              <button 
+                className="btn btn-primary"
+                onClick={() => setIsEditing(true)}
+                style={{ borderRadius: 12 }}
+              >
+                <FaEdit /> Edit Profile
+              </button>
+            ) : (
+              <div className="edit-actions" style={{ display: 'flex', gap: 8 }}>
+                <button 
+                  className="btn btn-success"
+                  onClick={handleSubmit}
+                  disabled={loading}
+                  style={{ borderRadius: 12 }}
+                >
+                  <FaSave /> {loading ? 'Saving...' : 'Save Changes'}
+                </button>
+                <button 
+                  className="btn btn-secondary"
+                  onClick={handleCancel}
+                  disabled={loading}
+                  style={{ borderRadius: 12 }}
+                >
+                  <FaTimes /> Cancel
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="profile-header" style={{ display: 'none' }}>
         <div className="profile-avatar">
           <FaUser size={60} />
         </div>
@@ -135,7 +179,7 @@ const Profile = () => {
         </div>
       </div>
 
-      <div className="profile-content">
+      <div className="profile-content" style={{ paddingTop: 16 }}>
         <div className="profile-section">
           <h2>Personal Information</h2>
           <div className="profile-grid">

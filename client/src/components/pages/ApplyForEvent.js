@@ -125,9 +125,9 @@ const ApplyForEvent = () => {
 
   if (loading) {
     return (
-      <div className="apply-loading">
+      <div className="container" style={{ textAlign: 'center', padding: '60px 0' }}>
         <div className="spinner"></div>
-        <p>Loading event details...</p>
+        <p style={{ marginTop: '10px', color: '#64748b' }}>Loading event details...</p>
       </div>
     );
   }
@@ -145,73 +145,58 @@ const ApplyForEvent = () => {
   }
 
   return (
-    <div style={{ 
-      minHeight: 'calc(100vh - 80px)', 
-      display: 'flex', 
-      alignItems: 'center', 
-      background: 'linear-gradient(135deg, #2c3e50 0%, #34495e 100%)',
-      padding: '20px 0'
-    }}>
-      <div className="container">
+    <div style={{ minHeight: 'calc(100vh - 80px)' }}>
+      <section style={{
+        background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #0d9488 100%)',
+        color: 'white',
+        padding: '36px 0 20px 0'
+      }}>
+        <div className="container" style={{ textAlign: 'center' }}>
+          <h2 style={{ margin: 0, fontSize: '2rem', fontWeight: 800 }}>Apply for Event</h2>
+          <div style={{ marginTop: '10px' }}>
+            <h3 style={{ margin: '0', fontSize: '1.2rem', opacity: '0.9' }}>{event.title}</h3>
+            <div style={{ 
+              display: 'flex', 
+              gap: '20px', 
+              justifyContent: 'center', 
+              marginTop: '10px',
+              fontSize: '14px',
+              opacity: '0.9'
+            }}>
+              <span><FaCalendarAlt /> {new Date(event.startDate).toLocaleDateString()}</span>
+              <span><FaMapMarkerAlt /> {event.venue}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div className="container" style={{ padding: '20px 0' }}>
         <div style={{ 
-          maxWidth: '600px', 
+          maxWidth: '640px', 
           margin: '0 auto', 
           background: 'white', 
           borderRadius: '15px',
           boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
           overflow: 'hidden'
         }}>
-          <div style={{ 
-            background: 'linear-gradient(135deg, #2c3e50 0%, #34495e 100%)', 
-            color: 'white', 
-            padding: '30px', 
-            textAlign: 'center' 
-          }}>
-            <h2 style={{ margin: '0', fontSize: '2rem' }}>Apply for Event</h2>
-            <div style={{ marginTop: '15px' }}>
-              <h3 style={{ margin: '0', fontSize: '1.2rem', opacity: '0.9' }}>{event.title}</h3>
-              <div style={{ 
-                display: 'flex', 
-                gap: '20px', 
-                justifyContent: 'center', 
-                marginTop: '10px',
+          <div style={{ padding: '24px', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'center' }}>
+            <Link
+              to={`/event-participants/${event._id}`}
+              style={{
+                background: '#f1f5f9',
+                color: '#0f172a',
+                padding: '8px 16px',
+                borderRadius: '8px',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
                 fontSize: '14px',
-                opacity: '0.8'
-              }}>
-                <span><FaCalendarAlt /> {new Date(event.startDate).toLocaleDateString()}</span>
-                <span><FaMapMarkerAlt /> {event.venue}</span>
-              </div>
-              
-              {/* View Participants Button */}
-              <div style={{ marginTop: '20px' }}>
-                <Link
-                  to={`/event-participants/${event._id}`}
-                  style={{
-                    background: 'rgba(255,255,255,0.2)',
-                    color: 'white',
-                    padding: '8px 16px',
-                    borderRadius: '6px',
-                    textDecoration: 'none',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    border: '1px solid rgba(255,255,255,0.3)',
-                    transition: 'all 0.3s ease'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.target.style.background = 'rgba(255,255,255,0.3)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.background = 'rgba(255,255,255,0.2)';
-                  }}
-                >
-                  <FaUsers />
-                  View Current Participants
-                </Link>
-              </div>
-            </div>
+                fontWeight: '700',
+                border: '1px solid #e2e8f0'
+              }}
+            >
+              <FaUsers /> View Current Participants
+            </Link>
           </div>
 
           <div style={{ padding: '30px' }}>
@@ -368,10 +353,10 @@ const ApplyForEvent = () => {
                   disabled={submitting}
                   style={{
                     padding: '12px 30px',
-                    background: '#3498db',
+                    background: 'linear-gradient(135deg, #0f172a, #0d9488)',
                     color: 'white',
                     border: 'none',
-                    borderRadius: '8px',
+                    borderRadius: '10px',
                     fontSize: '16px',
                     cursor: submitting ? 'not-allowed' : 'pointer',
                     opacity: submitting ? 0.7 : 1

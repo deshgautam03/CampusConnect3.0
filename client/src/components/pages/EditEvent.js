@@ -84,7 +84,7 @@ const EditEvent = () => {
   return (
     <div style={{ 
       minHeight: 'calc(100vh - 80px)', 
-      background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+      background: '#f8fafc',
       padding: '20px 0'
     }}>
       <div className="container">
@@ -98,7 +98,7 @@ const EditEvent = () => {
         }}>
           {/* Header */}
           <div style={{ 
-            background: 'linear-gradient(135deg, #f39c12 0%, #e67e22 100%)', 
+            background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #0d9488 100%)', 
             color: 'white', 
             padding: '30px', 
             textAlign: 'center' 
@@ -548,7 +548,7 @@ const EditEvent = () => {
                     fontSize: '18px',
                     borderRadius: '10px',
                     border: 'none',
-                    background: 'linear-gradient(135deg, #f39c12 0%, #e67e22 100%)',
+                    background: 'linear-gradient(135deg, #0f172a, #0d9488)',
                     color: 'white',
                     cursor: submitting ? 'not-allowed' : 'pointer',
                     opacity: submitting ? 0.7 : 1,

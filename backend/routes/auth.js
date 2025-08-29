@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
 const User = require('../models/User');
 const { auth } = require('../middleware/auth');
+const { sendEmail, sendWelcomeEmail, sendOTPEmail } = require('../utils/emailService');
+const crypto = require('crypto');
 
 // @route   POST /api/auth/register
 // @desc    Register a new user
@@ -76,6 +78,8 @@ router.post('/register', [
 
     user = new User(userFields);
     await user.save();
+    // Fire and forget welcome email (non-blocking)
+    sendWelcomeEmail(user).catch(() => {});
 
     // Create JWT token
     const payload = {
@@ -101,6 +105,76 @@ router.post('/register', [
         });
       }
     );
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// @route   POST /api/auth/forgot-password
+// @desc    Request password reset OTP
+// @access  Public
+router.post('/forgot-password', [
+  body('email', 'Please include a valid email').isEmail()
+], async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+      // Do not reveal whether email exists
+      return res.json({ message: 'If the email exists, an OTP has been sent.' });
+    }
+
+    // Generate 6-digit OTP
+    const otp = ('' + Math.floor(100000 + Math.random() * 900000));
+    user.passwordResetOTP = otp;
+    user.passwordResetExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+    await user.save();
+
+    await sendOTPEmail(email, otp);
+
+    res.json({ message: 'If the email exists, an OTP has been sent.' });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// @route   POST /api/auth/reset-password
+// @desc    Verify OTP and reset password
+// @access  Public
+router.post('/reset-password', [
+  body('email', 'Please include a valid email').isEmail(),
+  body('otp', 'OTP is required').isLength({ min: 4 }),
+  body('newPassword', 'Please enter a password with 6 or more characters').isLength({ min: 6 })
+], async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { email, otp, newPassword } = req.body;
+    const user = await User.findOne({ email });
+    if (!user || !user.passwordResetOTP || !user.passwordResetExpires) {
+      return res.status(400).json({ message: 'Invalid or expired OTP' });
+    }
+
+    if (user.passwordResetOTP !== otp || user.passwordResetExpires < Date.now()) {
+      return res.status(400).json({ message: 'Invalid or expired OTP' });
+    }
+
+    user.password = newPassword;
+    user.passwordResetOTP = null;
+    user.passwordResetExpires = null;
+    await user.save();
+
+    res.json({ message: 'Password has been reset successfully' });
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ message: 'Server error' });

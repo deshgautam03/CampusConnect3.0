@@ -14,6 +14,8 @@ import ProtectedRoute from './components/routing/ProtectedRoute';
 import Home from './components/pages/Home';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
+import ForgotPassword from './components/auth/ForgotPassword';
+import ResetPassword from './components/auth/ResetPassword';
 import FacultyLogin from './components/auth/FacultyLogin';
 import FacultyRegister from './components/auth/FacultyRegister';
 import Profile from './components/pages/Profile';
@@ -42,6 +44,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/faculty-login" element={<FacultyLogin />} />
             <Route path="/faculty-register" element={<FacultyRegister />} />
             <Route path="/events" element={<Events />} />

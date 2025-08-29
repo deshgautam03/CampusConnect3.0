@@ -62,31 +62,34 @@ const Events = () => {
 
   if (loading) {
     return (
-      <div className="container" style={{ textAlign: 'center', padding: '50px 0' }}>
+      <div className="container" style={{ textAlign: 'center', padding: '60px 0' }}>
         <div className="spinner"></div>
-        <p>Loading events...</p>
+        <p style={{ marginTop: '10px', color: '#64748b' }}>Loading events...</p>
       </div>
     );
   }
 
   return (
-    <div style={{ padding: '20px 0', minHeight: 'calc(100vh - 80px)' }}>
-      <div className="container">
-        {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <h1 style={{ fontSize: '2.5rem', marginBottom: '20px', color: '#2c3e50' }}>
-            Campus Events
-          </h1>
-          <p style={{ fontSize: '1.1rem', color: '#6c757d' }}>
-            Discover and participate in exciting campus events
-          </p>
+    <div style={{ minHeight: 'calc(100vh - 80px)' }}>
+      {/* Hero strip */}
+      <section style={{
+        background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #0d9488 100%)',
+        color: 'white',
+        padding: '48px 0 28px 0'
+      }}>
+        <div className="container" style={{ textAlign: 'center' }}>
+          <h1 style={{ fontSize: '2.25rem', fontWeight: 800, letterSpacing: '-0.01em', marginBottom: '10px' }}>Campus Events</h1>
+          <p style={{ opacity: 0.9 }}>Discover and participate in exciting campus events</p>
         </div>
+      </section>
+
+      <div className="container" style={{ paddingTop: '24px', paddingBottom: '24px' }}>
 
         {/* Search and Filter */}
         <div style={{ 
           display: 'flex', 
-          gap: '20px', 
-          marginBottom: '30px', 
+          gap: '16px', 
+          marginBottom: '24px', 
           flexWrap: 'wrap',
           alignItems: 'center',
           justifyContent: 'center'
@@ -97,7 +100,7 @@ const Events = () => {
               left: '12px', 
               top: '50%', 
               transform: 'translateY(-50%)', 
-              color: '#6c757d' 
+              color: '#64748b' 
             }} />
             <input
               type="text"
@@ -107,9 +110,10 @@ const Events = () => {
               style={{
                 width: '100%',
                 padding: '12px 12px 12px 40px',
-                border: '1px solid #ddd',
-                borderRadius: '8px',
-                fontSize: '16px'
+                border: '1px solid #e2e8f0',
+                borderRadius: '12px',
+                fontSize: '16px',
+                background: '#ffffff'
               }}
             />
           </div>
@@ -121,9 +125,10 @@ const Events = () => {
               onChange={(e) => setSelectedCategory(e.target.value)}
               style={{
                 padding: '12px',
-                border: '1px solid #ddd',
-                borderRadius: '8px',
-                fontSize: '16px'
+                border: '1px solid #e2e8f0',
+                borderRadius: '12px',
+                fontSize: '16px',
+                background: '#ffffff'
               }}
             >
               {categories.map(cat => (
@@ -146,13 +151,11 @@ const Events = () => {
             {filteredEvents.map((event) => (
               <div key={event._id} className="col-md-4" style={{ marginBottom: '30px' }}>
                 <div className="event-card" style={{
-                  border: '1px solid #eee',
-                  borderRadius: '12px',
+                  border: '1px solid #e2e8f0',
+                  borderRadius: '16px',
                   overflow: 'hidden',
                   background: 'white',
-                  boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-                  transition: 'transform 0.2s, box-shadow 0.2s',
-                  height: '100%'
+                  boxShadow: '0 10px 20px rgba(2,6,23,0.06)'
                 }}>
                   {event.image && (
                     <img 
@@ -160,7 +163,7 @@ const Events = () => {
                       alt={event.title} 
                       style={{
                         width: '100%',
-                        height: '200px',
+                        height: '190px',
                         objectFit: 'cover'
                       }}
                       onError={(e) => {
@@ -168,32 +171,27 @@ const Events = () => {
                       }}
                     />
                   )}
-                  <div style={{ padding: '20px' }}>
+                  <div style={{ padding: '16px' }}>
                     <div style={{
-                      background: '#3498db',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      padding: '4px 10px',
+                      borderRadius: '999px',
+                      background: 'linear-gradient(135deg, #0d9488, #14b8a6)',
                       color: 'white',
-                      padding: '4px 12px',
-                      borderRadius: '20px',
                       fontSize: '12px',
-                      display: 'inline-block',
-                      marginBottom: '12px'
-                    }}>
-                      {event.category}
-                    </div>
+                      fontWeight: 700,
+                      marginBottom: '10px'
+                    }}>{event.category}</div>
                     
-                    <h3 style={{
-                      fontSize: '1.3rem',
-                      marginBottom: '12px',
-                      color: '#2c3e50',
-                      lineHeight: '1.4'
-                    }}>
-                      {event.title}
-                    </h3>
+                    <h3 style={{ fontSize: '1.1rem', margin: 0, color: '#0f172a', fontWeight: 700 }}>{event.title}</h3>
                     
                     <p style={{
-                      color: '#6c757d',
-                      marginBottom: '20px',
-                      lineHeight: '1.6',
+                      color: '#475569',
+                      marginTop: '8px',
+                      marginBottom: '12px',
+                      lineHeight: 1.6,
                       display: '-webkit-box',
                       WebkitLineClamp: 3,
                       WebkitBoxOrient: 'vertical',
@@ -202,68 +200,46 @@ const Events = () => {
                       {event.description || event.shortDescription}
                     </p>
                     
-                    <div style={{ marginBottom: '20px' }}>
-                      <div style={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        gap: '8px', 
-                        marginBottom: '8px',
-                        color: '#6c757d',
-                        fontSize: '14px'
-                      }}>
-                        <FaCalendarAlt />
-                        {formatDate(event.startDate)}
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '12px', color: '#475569', fontSize: '0.9rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <FaCalendarAlt /> {formatDate(event.startDate)}
                       </div>
-                      <div style={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        gap: '8px', 
-                        marginBottom: '8px',
-                        color: '#6c757d',
-                        fontSize: '14px'
-                      }}>
-                        <FaMapMarkerAlt />
-                        {event.venue}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'flex-end' }}>
+                        <FaMapMarkerAlt /> {event.venue}
                       </div>
-                      <div style={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        gap: '8px', 
-                        marginBottom: '8px',
-                        color: '#6c757d',
-                        fontSize: '14px'
-                      }}>
-                        <FaUsers />
-                        {event.currentParticipants || 0}/{event.maxParticipants}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <FaUsers /> {(event.currentParticipants || 0)}/{event.maxParticipants}
                       </div>
-                      <div style={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        gap: '8px',
-                        color: '#6c757d',
-                        fontSize: '14px'
-                      }}>
-                        <FaClock />
-                        {event.entryFee > 0 ? `$${event.entryFee}` : 'Free'}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'flex-end' }}>
+                        <FaClock /> {event.entryFee > 0 ? `$${event.entryFee}` : 'Free'}
                       </div>
                     </div>
                     
                     <div style={{ display: 'flex', gap: '10px' }}>
-                      <Link 
-                        to={`/event/${event._id}`} 
-                        className="btn btn-primary"
-                        style={{ flex: 1, textAlign: 'center' }}
-                      >
-                        <FaEye style={{ marginRight: '5px' }} />
-                        View Details
+                      <Link to={`/event/${event._id}`} style={{
+                        flex: 1,
+                        textAlign: 'center',
+                        textDecoration: 'none',
+                        color: 'white',
+                        fontWeight: 700,
+                        padding: '10px 12px',
+                        borderRadius: '10px',
+                        background: 'linear-gradient(135deg, #0f172a, #0d9488)'
+                      }}>
+                        <FaEye style={{ marginRight: '6px' }} /> View
                       </Link>
-                      <Link 
-                        to={`/event-participants/${event._id}`} 
-                        className="btn btn-secondary"
-                        style={{ flex: 1, textAlign: 'center' }}
-                      >
-                        <FaUsers style={{ marginRight: '5px' }} />
-                        View Participants
+                      <Link to={`/event-participants/${event._id}`} style={{
+                        flex: 1,
+                        textAlign: 'center',
+                        textDecoration: 'none',
+                        color: '#0f172a',
+                        fontWeight: 700,
+                        padding: '10px 12px',
+                        borderRadius: '10px',
+                        background: '#f1f5f9',
+                        border: '1px solid #e2e8f0'
+                      }}>
+                        <FaUsers style={{ marginRight: '6px' }} /> Participants
                       </Link>
                     </div>
                   </div>
@@ -274,16 +250,8 @@ const Events = () => {
         )}
 
         {/* Results Count */}
-        <div style={{ 
-          textAlign: 'center', 
-          marginTop: '40px', 
-          padding: '20px',
-          background: '#f8f9fa',
-          borderRadius: '8px'
-        }}>
-          <p style={{ margin: 0, color: '#6c757d' }}>
-            Showing {filteredEvents.length} of {events.length} events
-          </p>
+        <div style={{ textAlign: 'center', marginTop: '16px', color: '#64748b' }}>
+          Showing {filteredEvents.length} of {events.length} events
         </div>
       </div>
     </div>

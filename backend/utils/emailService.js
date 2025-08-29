@@ -95,7 +95,7 @@ const sendEmail = async (to, subject, html) => {
     
     const mailOptions = {
       from: `"Campus Events"<${process.env.EMAIL_USER || 'deshgautam05@gmail.com'}>`,
-      to: "deshgautam05@gmail.com",
+      to: to,
       subject: subject,
       html: html
     };
@@ -106,6 +106,26 @@ const sendEmail = async (to, subject, html) => {
     console.error('Error sending email:', error);
     throw error;
   }
+};
+
+// Send welcome email to new users
+const sendWelcomeEmail = async (user) => {
+  const subject = 'Welcome to Campus Events Portal!';
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <h2 style="color:#2c3e50;">Welcome, ${user.name} 👋</h2>
+      <p>We're excited to have you join the Campus Events Portal.</p>
+      <div style="background:#ecf0f1; padding:16px; border-radius:8px;">
+        <p><strong>Your role:</strong> ${user.userType}</p>
+        <p><strong>Department:</strong> ${user.department || 'N/A'}</p>
+      </div>
+      <p style="margin-top:16px;">Start exploring events, apply to participate, and stay updated!</p>
+      <div style="margin-top:24px;">
+        <a href="${process.env.CLIENT_URL || 'http://localhost:3000'}/events" style="background:#e67e22; color:#fff; padding:10px 20px; text-decoration:none; border-radius:6px;">Browse Events</a>
+      </div>
+    </div>
+  `;
+  return sendEmail(user.email, subject, html);
 };
 
 // Send application status update email
@@ -172,8 +192,53 @@ const sendApplicationStatusEmail = async (application, status) => {
   }
 };
 
+// Send OTP email for password reset
+const sendOTPEmail = async (email, otp) => {
+  const subject = 'Password Reset OTP - Campus Events Portal';
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <div style="background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
+        <h2 style="margin: 0; font-size: 24px;">🔐 Password Reset Request</h2>
+        <p style="margin: 10px 0 0 0; opacity: 0.9;">Campus Events Portal</p>
+      </div>
+      
+      <div style="background: white; padding: 30px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <p style="color: #2c3e50; font-size: 16px; line-height: 1.6;">
+          You have requested to reset your password. Use the following One-Time Password (OTP) to complete the process:
+        </p>
+        
+        <div style="background: #f8f9fa; border: 2px dashed #e74c3c; border-radius: 8px; padding: 20px; text-align: center; margin: 25px 0;">
+          <p style="margin: 0 0 10px 0; color: #7f8c8d; font-size: 14px; font-weight: bold;">YOUR OTP CODE</p>
+          <div style="font-size: 32px; font-weight: 700; letter-spacing: 8px; color: #e74c3c; font-family: 'Courier New', monospace;">${otp}</div>
+        </div>
+        
+        <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 6px; padding: 15px; margin: 20px 0;">
+          <p style="margin: 0; color: #856404; font-size: 14px;">
+            <strong>⚠️ Important:</strong> This OTP will expire in 10 minutes. If you did not request a password reset, please ignore this email.
+          </p>
+        </div>
+        
+        <div style="background: #e8f5e8; border: 1px solid #c3e6c3; border-radius: 6px; padding: 15px; margin: 20px 0;">
+          <p style="margin: 0; color: #155724; font-size: 14px;">
+            <strong>📝 Instructions:</strong> Enter this OTP in the password reset form along with your new password to complete the reset process.
+          </p>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #ecf0f1;">
+          <p style="color: #95a5a6; font-size: 12px; margin: 0;">
+            This is an automated message from Campus Events Portal. Please do not reply to this email.
+          </p>
+        </div>
+      </div>
+    </div>
+  `;
+  return sendEmail(email, subject, html);
+};
+
 module.exports = {
   sendEventNotification,
   sendEmail,
-  sendApplicationStatusEmail
+  sendApplicationStatusEmail,
+  sendWelcomeEmail,
+  sendOTPEmail
 };

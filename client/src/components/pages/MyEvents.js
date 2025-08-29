@@ -49,7 +49,7 @@ const MyEvents = () => {
         marginBottom: '30px' 
       }}>
         <h1 style={{ 
-          color: '#2c3e50', 
+          color: '#0f172a', 
           margin: 0,
           display: 'flex',
           alignItems: 'center',
@@ -61,10 +61,10 @@ const MyEvents = () => {
         <Link 
           to="/create-event" 
           style={{
-            background: '#3498db',
+            background: 'linear-gradient(135deg, #0f172a, #0d9488)',
             color: 'white',
             padding: '12px 24px',
-            borderRadius: '8px',
+            borderRadius: '10px',
             textDecoration: 'none',
             display: 'flex',
             alignItems: 'center',
@@ -100,10 +100,10 @@ const MyEvents = () => {
           <Link 
             to="/create-event" 
             style={{
-              background: '#3498db',
+              background: 'linear-gradient(135deg, #0f172a, #0d9488)',
               color: 'white',
               padding: '15px 30px',
-              borderRadius: '8px',
+              borderRadius: '10px',
               textDecoration: 'none',
               display: 'inline-flex',
               alignItems: 'center',
@@ -120,11 +120,11 @@ const MyEvents = () => {
         <div style={{ display: 'grid', gap: '20px' }}>
           {events.map(event => (
             <div key={event._id} style={{ 
-              border: '1px solid #ecf0f1', 
-              borderRadius: '15px', 
+              border: '1px solid #e2e8f0', 
+              borderRadius: '16px', 
               padding: '25px', 
               background: 'white',
-              boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
+              boxShadow: '0 10px 20px rgba(2,6,23,0.06)',
               transition: 'transform 0.2s ease, box-shadow 0.2s ease'
             }}
             onMouseEnter={(e) => {
@@ -221,13 +221,13 @@ const MyEvents = () => {
                   gap: '15px'
                 }}>
                   <div style={{
-                    background: event.status === 'active' ? '#27ae60' : '#f39c12',
+                    background: event.status === 'active' ? '#16a34a' : '#f59e0b',
                     color: 'white',
                     padding: '6px 12px',
-                    borderRadius: '20px',
+                    borderRadius: '999px',
                     fontSize: '12px',
                     textTransform: 'uppercase',
-                    fontWeight: '600'
+                    fontWeight: '700'
                   }}>
                     {event.status || 'active'}
                   </div>
@@ -240,11 +240,11 @@ const MyEvents = () => {
                     <Link 
                       to={`/event/${event._id}`} 
                       style={{
-                        background: '#3498db',
+                        background: 'linear-gradient(135deg, #0f172a, #0d9488)',
                         color: 'white',
                         border: 'none',
                         padding: '10px 20px',
-                        borderRadius: '8px',
+                        borderRadius: '10px',
                         textDecoration: 'none',
                         fontSize: '14px',
                         display: 'flex',
@@ -261,11 +261,11 @@ const MyEvents = () => {
                     <Link 
                       to={`/event-participants/${event._id}`} 
                       style={{
-                        background: '#27ae60',
+                        background: '#16a34a',
                         color: 'white',
                         border: 'none',
                         padding: '10px 20px',
-                        borderRadius: '8px',
+                        borderRadius: '10px',
                         textDecoration: 'none',
                         fontSize: '14px',
                         display: 'flex',
@@ -282,11 +282,11 @@ const MyEvents = () => {
                     <Link 
                       to={`/edit-event/${event._id}`} 
                       style={{
-                        background: '#f39c12',
+                        background: '#f59e0b',
                         color: 'white',
                         border: 'none',
                         padding: '10px 20px',
-                        borderRadius: '8px',
+                        borderRadius: '10px',
                         textDecoration: 'none',
                         fontSize: '14px',
                         display: 'flex',

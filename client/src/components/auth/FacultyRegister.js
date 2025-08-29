@@ -73,35 +73,32 @@ const FacultyRegister = () => {
   };
 
   return (
-    <div style={{ 
-      minHeight: 'calc(100vh - 80px)', 
-      display: 'flex', 
-      alignItems: 'center', 
-      background: 'linear-gradient(135deg, #2c3e50 0%, #34495e 100%)',
-      padding: '20px 0'
-    }}>
-      <div className="container">
+    <div style={{ minHeight: 'calc(100vh - 80px)' }}>
+      <section style={{
+        background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #0d9488 100%)',
+        color: 'white',
+        padding: '36px 0 20px 0'
+      }}>
+        <div className="container">
+          <h2 style={{ margin: 0, fontWeight: 800 }}>Create Faculty Account</h2>
+          <p style={{ margin: '6px 0 0 0', opacity: 0.9 }}>Register as a faculty member to manage campus events</p>
+        </div>
+      </section>
+      <div className="container" style={{ padding: '20px 0' }}>
         <div style={{ 
-          maxWidth: '500px', 
+          maxWidth: '520px', 
           margin: '0 auto', 
           background: 'white', 
-          borderRadius: '15px',
-          boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
-          overflow: 'hidden'
+          borderRadius: '16px',
+          boxShadow: '0 10px 20px rgba(2,6,23,0.06)',
+          overflow: 'hidden',
+          border: '1px solid #e2e8f0'
         }}>
-          <div style={{ 
-            background: 'linear-gradient(135deg, #2c3e50 0%, #34495e 100%)', 
-            color: 'white', 
-            padding: '30px', 
-            textAlign: 'center' 
-          }}>
-            <h2 style={{ margin: '0', fontSize: '2rem' }}>Create Faculty Account</h2>
-            <p style={{ margin: '10px 0 0 0', opacity: '0.9' }}>
-              Register as a faculty member to manage campus events
-            </p>
+          <div style={{ padding: '24px', borderBottom: '1px solid #e2e8f0' }}>
+            <h3 style={{ margin: 0, color: '#0f172a' }}>Sign up</h3>
           </div>
 
-          <div style={{ padding: '30px' }}>
+          <div style={{ padding: '24px' }}>
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <label className="form-label">
@@ -245,7 +242,16 @@ const FacultyRegister = () => {
               <button
                 type="submit"
                 className="btn btn-primary"
-                style={{ width: '100%', marginTop: '20px' }}
+                style={{ 
+                  width: '100%', 
+                  marginTop: '12px',
+                  padding: '10px 16px',
+                  borderRadius: '10px',
+                  background: 'linear-gradient(135deg, #0f172a, #0d9488)',
+                  border: 'none',
+                  color: 'white',
+                  fontWeight: 700
+                }}
                 disabled={loading}
               >
                 <FaUserPlus style={{ marginRight: '8px' }} />
@@ -253,33 +259,21 @@ const FacultyRegister = () => {
               </button>
             </form>
 
-            <div style={{ 
-              textAlign: 'center', 
-              marginTop: '30px', 
-              paddingTop: '20px', 
-              borderTop: '1px solid #eee' 
-            }}>
+            <div style={{ textAlign: 'center', marginTop: '18px', paddingTop: '16px', borderTop: '1px solid #e2e8f0' }}>
               <p style={{ margin: '0 0 15px 0', color: '#6c757d' }}>
                 Already have an account?
               </p>
               <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap' }}>
-                <Link to="/faculty-login" className="btn btn-outline">
+                <Link to="/faculty-login" className="btn btn-outline" style={{ padding: '10px 16px', borderRadius: '10px', border: '1px solid #e2e8f0', color: '#0f172a', textDecoration: 'none' }}>
                   Faculty Login
                 </Link>
-                <Link to="/login" className="btn btn-outline">
+                <Link to="/login" className="btn btn-outline" style={{ padding: '10px 16px', borderRadius: '10px', border: '1px solid #e2e8f0', color: '#0f172a', textDecoration: 'none' }}>
                   Student/Coordinator Login
                 </Link>
               </div>
             </div>
 
-            <div style={{ 
-              marginTop: '20px', 
-              padding: '15px', 
-              background: '#f8f9fa', 
-              borderRadius: '8px',
-              fontSize: '14px',
-              color: '#6c757d'
-            }}>
+            <div style={{ marginTop: '16px', padding: '15px', background: '#f8fafc', borderRadius: '12px', fontSize: '14px', color: '#64748b', border: '1px solid #e2e8f0' }}>
               <strong>Note:</strong> Faculty accounts have administrative privileges to manage users, 
               view all events, and monitor campus activities. Please ensure you have proper authorization 
               to create a faculty account.

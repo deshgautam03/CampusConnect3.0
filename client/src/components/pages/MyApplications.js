@@ -53,11 +53,20 @@ const MyApplications = () => {
     if (token) fetchData();
   }, [token]);
 
-  if (loading) return <div style={{ padding: 24 }}>Loading...</div>;
+  if (loading) return <div style={{ padding: 24, textAlign: 'center' }}>Loading...</div>;
 
   return (
-    <div className="container" style={{ padding: '24px 0' }}>
-      <h2 style={{ marginBottom: 24, color: '#2c3e50' }}>My Applications</h2>
+    <div style={{ minHeight: 'calc(100vh - 80px)' }}>
+      <section style={{
+        background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #0d9488 100%)',
+        color: 'white',
+        padding: '36px 0 20px 0'
+      }}>
+        <div className="container">
+          <h2 style={{ margin: 0, fontWeight: 800 }}>My Applications</h2>
+        </div>
+      </section>
+      <div className="container" style={{ padding: '24px 0' }}>
       {items.length === 0 && (
         <div style={{ 
           textAlign: 'center', 
@@ -72,18 +81,17 @@ const MyApplications = () => {
       <div style={{ display: 'grid', gap: 16 }}>
         {items.map(app => (
           <div key={app._id} style={{
-            border: '1px solid #ecf0f1', 
-            borderRadius: 12, 
+            border: '1px solid #e2e8f0', 
+            borderRadius: 16, 
             padding: 20, 
             background: 'white',
-            boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
-            transition: 'box-shadow 0.2s ease'
+            boxShadow: '0 10px 20px rgba(2,6,23,0.06)'
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
               <div style={{ flex: 1 }}>
                 <h3 style={{ 
                   margin: '0 0 8px 0', 
-                  color: '#2c3e50',
+                  color: '#0f172a',
                   fontSize: '18px'
                 }}>
                   {app.event?.title}
@@ -91,7 +99,7 @@ const MyApplications = () => {
                 <div style={{ 
                   display: 'flex', 
                   gap: 20, 
-                  color: '#6c757d', 
+                  color: '#64748b', 
                   fontSize: 14,
                   marginBottom: 12
                 }}>
@@ -112,7 +120,7 @@ const MyApplications = () => {
                   <div style={{ 
                     background: '#f8f9fa', 
                     padding: '12px', 
-                    borderRadius: '8px',
+                    borderRadius: '12px',
                     marginBottom: '12px'
                   }}>
                     <div style={{ fontWeight: '600', color: '#2c3e50', marginBottom: '6px' }}>
@@ -127,9 +135,9 @@ const MyApplications = () => {
                 {/* Show additional info if provided */}
                 {app.additionalInfo && (
                   <div style={{ 
-                    background: '#f8f9fa', 
+                    background: '#f8fafc', 
                     padding: '12px', 
-                    borderRadius: '8px',
+                    borderRadius: '12px',
                     marginBottom: '12px'
                   }}>
                     <div style={{ fontWeight: '600', color: '#2c3e50', marginBottom: '6px' }}>
@@ -147,7 +155,7 @@ const MyApplications = () => {
                     background: '#f8d7da', 
                     color: '#721c24', 
                     padding: '12px', 
-                    borderRadius: '8px',
+                    borderRadius: '12px',
                     border: '1px solid #f5c6cb',
                     marginBottom: '12px'
                   }}>
@@ -166,7 +174,7 @@ const MyApplications = () => {
                     background: '#fff3cd', 
                     color: '#856404', 
                     padding: '12px', 
-                    borderRadius: '8px',
+                    borderRadius: '12px',
                     border: '1px solid #ffeaa7'
                   }}>
                     <div style={{ fontWeight: '600', marginBottom: '6px' }}>
@@ -185,23 +193,17 @@ const MyApplications = () => {
                 <Link
                   to={`/event-participants/${app.event._id}`}
                   style={{
-                    background: '#3498db',
+                    background: 'linear-gradient(135deg, #0f172a, #0d9488)',
                     color: 'white',
-                    padding: '8px 16px',
-                    borderRadius: '6px',
+                    padding: '10px 16px',
+                    borderRadius: '10px',
                     textDecoration: 'none',
                     fontSize: '12px',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '6px',
                     fontWeight: '600',
-                    transition: 'background 0.2s ease'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.target.style.background = '#2980b9';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.background = '#3498db';
+                    border: '1px solid #e2e8f0'
                   }}
                 >
                   <FaUsers />
@@ -212,6 +214,7 @@ const MyApplications = () => {
           </div>
         ))}
       </div>
+    </div>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 .profile-container {
   min-height: calc(100vh - 80px);
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #0d9488 100%);
   padding: 40px 0;
 }
 
@@ -29,18 +29,19 @@
 
 .profile-header {
   background: white;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-  padding: 40px;
-  margin-bottom: 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 20px rgba(2,6,23,0.06);
+  border: 1px solid #e2e8f0;
+  padding: 32px;
+  margin-bottom: 24px;
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 24px;
   flex-wrap: wrap;
 }
 
 .profile-avatar {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #0f172a, #0d9488);
   width: 120px;
   height: 120px;
   border-radius: 50%;
@@ -58,24 +59,24 @@
 
 .profile-info h1 {
   margin: 0 0 10px 0;
-  color: #2c3e50;
-  font-size: 2.5rem;
-  font-weight: 700;
+  color: #0f172a;
+  font-size: 2.25rem;
+  font-weight: 800;
 }
 
 .user-type {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
   color: white;
-  padding: 8px 16px;
-  border-radius: 20px;
+  padding: 6px 14px;
+  border-radius: 999px;
   display: inline-block;
   margin: 0 0 10px 0;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .user-email {
-  color: #6c757d;
+  color: #64748b;
   margin: 0;
   font-size: 16px;
   display: flex;
@@ -100,18 +101,19 @@
 
 .profile-section {
   background: white;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 10px 20px rgba(2,6,23,0.06);
+  border: 1px solid #e2e8f0;
+  padding: 32px;
 }
 
 .profile-section h2 {
-  margin: 0 0 30px 0;
-  color: #2c3e50;
-  font-size: 1.8rem;
-  font-weight: 600;
-  border-bottom: 2px solid #e9ecef;
-  padding-bottom: 15px;
+  margin: 0 0 24px 0;
+  color: #0f172a;
+  font-size: 1.5rem;
+  font-weight: 800;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 12px;
 }
 
 .profile-grid {
@@ -136,12 +138,12 @@
 
 .profile-field p {
   margin: 0;
-  color: #2c3e50;
+  color: #0f172a;
   font-size: 16px;
   padding: 12px 16px;
-  background: #f8f9fa;
-  border-radius: 8px;
-  border-left: 4px solid #3498db;
+  background: #f8fafc;
+  border-radius: 10px;
+  border-left: 4px solid #0d9488;
 }
 
 .profile-field small {
@@ -152,16 +154,16 @@
 
 .profile-field .form-control {
   padding: 12px 16px;
-  border: 2px solid #e9ecef;
-  border-radius: 8px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
   font-size: 16px;
   transition: border-color 0.3s ease;
 }
 
 .profile-field .form-control:focus {
   outline: none;
-  border-color: #3498db;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+  border-color: #0d9488;
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12);
 }
 
 .profile-field select.form-control {
