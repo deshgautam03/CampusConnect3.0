@@ -10,7 +10,7 @@ const Home = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await axios.get('/api/events');
+        const res = await axios.get('https://campusconnect3-0.onrender.com/api/events');
         setEvents(res.data);
       } catch (error) {
         console.error('Error fetching events:', error);
@@ -113,6 +113,17 @@ const Home = () => {
     });
   };
 
+  // Only show events whose registration deadline has not passed
+  const now = new Date();
+  const activeEvents = events.filter(e => {
+    if (!e || !e.registrationDeadline) return true;
+    try {
+      return new Date(e.registrationDeadline) >= now;
+    } catch {
+      return true;
+    }
+  });
+
   if (loading) {
     return (
       <div className="container" style={{ textAlign: 'center', padding: '60px 0' }}>
@@ -123,10 +134,10 @@ const Home = () => {
   }
 
   const categories = Array.from(
-    new Set(events.map(e => e.category).filter(Boolean))
+    new Set(activeEvents.map(e => e.category).filter(Boolean))
   ).slice(0, 8);
 
-  const totalParticipants = events.reduce((sum, e) => sum + (e.currentParticipants || 0), 0);
+  const totalParticipants = activeEvents.reduce((sum, e) => sum + (e.currentParticipants || 0), 0);
 
   return (
     <div>
@@ -247,7 +258,7 @@ const Home = () => {
           </div>
 
           <div className="row">
-            {events.slice(0, 6).map((event) => (
+            {activeEvents.slice(0, 6).map((event) => (
               <div key={event._id} className="col-md-4" style={{ marginBottom: '24px' }}>
                 <div style={{
                   background: 'white',
@@ -372,7 +383,7 @@ const Home = () => {
       {/* Footer */}
       <footer style={{ background: 'linear-gradient(135deg, #0f172a, #1e293b)', color: 'white', padding: '28px 0' }}>
         <div className="container" style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ opacity: 0.9 }}>© {new Date().getFullYear()} CampusConnect</div>
+          <div style={{ opacity: 0.9 }}>© {new Date().getFullYear()} CampusConnect. Developed by <a href="https://www.linkedin.com/in/desh-deepak-gautam-a68a6a235?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener noreferrer" style={{ color: 'white', textDecoration: 'none' }}>Desh Deepak Gautam</a></div>
           <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
             <a href="mailto:deshgautam03@gmail.com" style={{ color: 'white', textDecoration: 'none' }}><FaEnvelope /> <span style={{ marginLeft: 6 }}>Email</span></a>
             <a href="tel:+919027680644" style={{ color: 'white', textDecoration: 'none' }}><FaPhone /> <span style={{ marginLeft: 6 }}>Call</span></a>

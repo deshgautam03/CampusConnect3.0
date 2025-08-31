@@ -24,7 +24,7 @@ const ApplyForEvent = () => {
     const fetchEventDetails = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`/api/events/${id}`);
+        const response = await axios.get(`https://campusconnect3-0.onrender.com/api/events/${id}`);
         setEvent(response.data);
       } catch (error) {
         console.error('Error fetching event:', error);
@@ -105,7 +105,7 @@ const ApplyForEvent = () => {
         applicationData.teamMembers = formData.teamMembers.filter(member => member.trim());
       }
 
-      await axios.post('/api/applications', applicationData, {
+      await axios.post('https://campusconnect3-0.onrender.com/api/applications', applicationData, {
         headers: { Authorization: `Bearer ${token}` }
       });
 

@@ -223,6 +223,9 @@ const Login = () => {
                   Faculty Login
                 </Link>
               </div>
+              <div style={{ marginTop: '1rem', padding: '12px', background: '#f8fafc', borderRadius: '8px', fontSize: '14px', color: '#64748b', border: '1px solid #e2e8f0' }}>
+                <strong>Note:</strong> Students and Coordinators use this login. Faculty members must use the Faculty Login portal.
+              </div>
             </div>
           </div>
         </div>

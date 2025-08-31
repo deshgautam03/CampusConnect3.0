@@ -18,13 +18,13 @@ const EventDetails = () => {
     const fetchEventDetails = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`/api/events/${id}`);
+        const response = await axios.get(`https://campusconnect3-0.onrender.com/api/events/${id}`);
         setEvent(response.data);
         
         // Check if user has already applied
         if (isAuthenticated && user?.userType === 'student') {
           try {
-            const applicationResponse = await axios.get(`/api/applications/student/my-applications`, {
+            const applicationResponse = await axios.get(`https://campusconnect3-0.onrender.com/api/applications/student/my-applications`, {
               headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
             const hasAppliedToEvent = applicationResponse.data.some(

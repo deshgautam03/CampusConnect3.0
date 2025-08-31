@@ -15,7 +15,7 @@ const EditEvent = () => {
   useEffect(() => {
     const fetchEvent = async () => {
       try {
-        const res = await axios.get(`/api/events/${id}`);
+        const res = await axios.get(`https://campusconnect3-0.onrender.com/api/events/${id}`);
         setEvent(res.data);
         setForm({
           title: res.data.title || '',
@@ -53,7 +53,7 @@ const EditEvent = () => {
     e.preventDefault();
     try {
       setSubmitting(true);
-      await axios.put(`/api/events/${id}`, form);
+      await axios.put(`https://campusconnect3-0.onrender.com/api/events/${id}`, form);
       toast.success('Event updated successfully!');
       navigate('/my-events');
     } catch (error) {

@@ -22,8 +22,8 @@ const FacultyUserManagement = () => {
     setLoading(true);
     try {
       const [s, c] = await Promise.all([
-        axios.get('/api/users/students'),
-        axios.get('/api/users/coordinators')
+        axios.get('https://campusconnect3-0.onrender.com/api/users/students'),
+        axios.get('https://campusconnect3-0.onrender.com/api/users/coordinators')
       ]);
       setStudents(s.data);
       setCoordinators(c.data);
@@ -37,7 +37,7 @@ const FacultyUserManagement = () => {
 
   const setStatus = async (id, isActive) => {
     try {
-      await axios.put(`/api/users/${id}/status`, { isActive });
+      await axios.put(`https://campusconnect3-0.onrender.com/api/users/${id}/status`, { isActive });
       await load();
       toast.success(`User ${isActive ? 'activated' : 'deactivated'} successfully`);
     } catch (error) {

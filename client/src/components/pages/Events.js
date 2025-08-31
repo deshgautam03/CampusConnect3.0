@@ -15,13 +15,12 @@ const Events = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await axios.get('/api/events');
+        const res = await axios.get('https://campusconnect3-0.onrender.com/api/events');
+        // Keep raw events; initial filtered list will be computed in the effect below
         setEvents(res.data);
-        setFilteredEvents(res.data);
       } catch (error) {
         console.error('Error fetching events:', error);
         setEvents([]);
-        setFilteredEvents([]);
       } finally {
         setLoading(false);
       }
@@ -31,7 +30,16 @@ const Events = () => {
   }, []);
 
   useEffect(() => {
-    let filtered = events;
+    // Exclude expired events (deadline passed)
+    const now = new Date();
+    let filtered = events.filter(e => {
+      if (!e || !e.registrationDeadline) return true;
+      try {
+        return new Date(e.registrationDeadline) >= now;
+      } catch {
+        return true;
+      }
+    });
 
     // Filter by search term
     if (searchTerm) {
@@ -249,9 +257,14 @@ const Events = () => {
           </div>
         )}
 
-        {/* Results Count */}
+        {/* Results Count and Past Events Link */}
         <div style={{ textAlign: 'center', marginTop: '16px', color: '#64748b' }}>
-          Showing {filteredEvents.length} of {events.length} events
+          Showing {filteredEvents.length} of {events.length} active events
+          <div style={{ marginTop: '8px' }}>
+            <Link to="/past-events" style={{ textDecoration: 'none', fontWeight: 600 }}>
+              View Past Events
+            </Link>
+          </div>
         </div>
       </div>
     </div>

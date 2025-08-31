@@ -444,18 +444,35 @@ const Register = () => {
               <p style={{ margin: '0 0 1rem 0', color: '#64748b', fontSize: '0.95rem' }}>
                 Already have an account?
               </p>
-              <Link to="/login" className="btn btn-outline" style={{
-                padding: '0.75rem 1.5rem',
-                borderRadius: '12px',
-                border: '2px solid #475569',
-                color: '#475569',
-                textDecoration: 'none',
-                fontWeight: '600',
-                transition: 'all 0.2s ease-in-out',
-                background: 'transparent'
-              }}>
-                Sign In
-              </Link>
+              <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                <Link to="/login" className="btn btn-outline" style={{
+                  padding: '0.75rem 1.5rem',
+                  borderRadius: '12px',
+                  border: '2px solid #475569',
+                  color: '#475569',
+                  textDecoration: 'none',
+                  fontWeight: '600',
+                  transition: 'all 0.2s ease-in-out',
+                  background: 'transparent'
+                }}>
+                  Sign In
+                </Link>
+                <Link to="/faculty-register" className="btn btn-outline" style={{
+                  padding: '0.75rem 1.5rem',
+                  borderRadius: '12px',
+                  border: '2px solid #0d9488',
+                  color: '#0d9488',
+                  textDecoration: 'none',
+                  fontWeight: '600',
+                  transition: 'all 0.2s ease-in-out',
+                  background: 'transparent'
+                }}>
+                  Faculty Registration
+                </Link>
+              </div>
+              <div style={{ marginTop: '1rem', padding: '12px', background: '#f8fafc', borderRadius: '8px', fontSize: '14px', color: '#64748b', border: '1px solid #e2e8f0' }}>
+                <strong>Note:</strong> Faculty members must register through the Faculty Registration portal.
+              </div>
             </div>
           </div>
         </div>

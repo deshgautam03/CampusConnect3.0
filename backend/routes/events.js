@@ -172,7 +172,7 @@ router.delete('/:id', auth, authorize('coordinator'), async (req, res) => {
 // Get coordinator's events
 router.get('/coordinator/my-events', auth, authorize('coordinator'), async (req, res) => {
   try {
-    const events = await Event.find({ coordinator: req.user.id }).sort({ startDate: 1 });
+    const events = await Event.find({ coordinator: req.user.id }).sort({ registrationDeadline: -1 });
     res.json(events);
   } catch (error) {
     console.error('Error fetching coordinator events:', error);

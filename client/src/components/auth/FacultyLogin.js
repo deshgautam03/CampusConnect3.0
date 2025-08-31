@@ -41,32 +41,76 @@ const FacultyLogin = () => {
   };
 
   return (
-    <div style={{ minHeight: 'calc(100vh - 80px)' }}>
-      <section style={{
-        background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #0d9488 100%)',
-        color: 'white',
-        padding: '36px 0 20px 0'
-      }}>
-        <div className="container">
-          <h2 style={{ margin: 0, fontWeight: 800 }}>Faculty Login</h2>
-          <p style={{ margin: '6px 0 0 0', opacity: 0.9 }}>Access faculty dashboard and manage campus events</p>
-        </div>
-      </section>
-      <div className="container" style={{ padding: '20px 0' }}>
+    <div style={{ 
+      minHeight: 'calc(100vh - 80px)', 
+      display: 'flex', 
+      alignItems: 'center', 
+      background: 'linear-gradient(135deg, #1e293b 0%, #475569 50%, #0d9488 100%)',
+      padding: '20px 0',
+      position: 'relative',
+      overflow: 'hidden'
+    }}>
+      {/* Background Pattern */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: `url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>')`,
+        opacity: 0.3
+      }} />
+      
+      <div className="container">
         <div style={{ 
-          maxWidth: '420px', 
+          maxWidth: '450px', 
           margin: '0 auto', 
-          background: 'white', 
-          borderRadius: '16px',
-          boxShadow: '0 10px 20px rgba(2,6,23,0.06)',
+          background: 'rgba(255, 255, 255, 0.95)',
+          backdropFilter: 'blur(20px)',
+          borderRadius: '24px',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
           overflow: 'hidden',
-          border: '1px solid #e2e8f0'
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          position: 'relative',
+          zIndex: 1
         }}>
-          <div style={{ padding: '24px', borderBottom: '1px solid #e2e8f0' }}>
-            <h3 style={{ margin: 0, color: '#0f172a' }}>Sign in</h3>
+          <div style={{ 
+            background: 'linear-gradient(135deg, #0f172a 0%, #0d9488 100%)', 
+            color: 'white', 
+            padding: '2rem', 
+            textAlign: 'center',
+            position: 'relative',
+            overflow: 'hidden'
+          }}>
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%)',
+              transform: 'translateX(-100%)',
+              transition: 'transform 0.6s ease-in-out'
+            }} />
+            <h2 style={{ 
+              margin: '0', 
+              fontSize: '2rem',
+              fontWeight: '700',
+              position: 'relative',
+              zIndex: 1
+            }}>Faculty Login</h2>
+            <p style={{ 
+              margin: '10px 0 0 0', 
+              opacity: '0.9',
+              fontSize: '1.1rem',
+              position: 'relative',
+              zIndex: 1
+            }}>
+              Access faculty dashboard and manage campus events
+            </p>
           </div>
 
-          <div style={{ padding: '24px' }}>
+          <div style={{ padding: '2rem' }}>
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <label className="form-label">Faculty Email</label>
@@ -78,6 +122,13 @@ const FacultyLogin = () => {
                   onChange={handleChange}
                   required
                   placeholder="Enter your faculty email"
+                  style={{
+                    border: '2px solid #e2e8f0',
+                    borderRadius: '12px',
+                    padding: '0.875rem 1rem',
+                    fontSize: '1rem',
+                    transition: 'all 0.2s ease-in-out'
+                  }}
                 />
               </div>
 
@@ -91,6 +142,13 @@ const FacultyLogin = () => {
                   onChange={handleChange}
                   required
                   placeholder="Enter your password"
+                  style={{
+                    border: '2px solid #e2e8f0',
+                    borderRadius: '12px',
+                    padding: '0.875rem 1rem',
+                    fontSize: '1rem',
+                    transition: 'all 0.2s ease-in-out'
+                  }}
                 />
               </div>
 
@@ -99,13 +157,18 @@ const FacultyLogin = () => {
                 className="btn btn-primary"
                 style={{ 
                   width: '100%', 
-                  marginTop: '12px',
-                  padding: '10px 16px',
-                  borderRadius: '10px',
+                  marginTop: '1.5rem',
+                  padding: '0.875rem 1.5rem',
+                  fontSize: '1rem',
+                  fontWeight: '600',
+                  borderRadius: '12px',
                   background: 'linear-gradient(135deg, #0f172a, #0d9488)',
                   border: 'none',
                   color: 'white',
-                  fontWeight: 700
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease-in-out',
+                  position: 'relative',
+                  overflow: 'hidden'
                 }}
                 disabled={loading}
               >
@@ -113,26 +176,58 @@ const FacultyLogin = () => {
               </button>
             </form>
 
-            <div style={{ textAlign: 'center', marginTop: '18px', paddingTop: '16px', borderTop: '1px solid #e2e8f0' }}>
-              <p style={{ margin: '0 0 15px 0', color: '#6c757d' }}>
+            <div style={{ 
+              textAlign: 'center', 
+              marginTop: '2rem', 
+              paddingTop: '1.5rem', 
+              borderTop: '1px solid #e2e8f0' 
+            }}>
+              <p style={{ margin: '0 0 1rem 0', color: '#64748b', fontSize: '0.95rem' }}>
                 Not a faculty member?
               </p>
-              <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap' }}>
-                <Link to="/faculty-register" className="btn btn-primary" style={{ padding: '10px 16px', borderRadius: '10px', background: 'linear-gradient(135deg, #0f172a, #0d9488)', border: 'none' }}>
+              <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                <Link to="/faculty-register" className="btn btn-primary" style={{ 
+                  padding: '0.75rem 1.5rem',
+                  borderRadius: '12px',
+                  background: 'linear-gradient(135deg, #0f172a, #0d9488)',
+                  border: 'none',
+                  color: 'white',
+                  textDecoration: 'none',
+                  fontWeight: '600',
+                  transition: 'all 0.2s ease-in-out'
+                }}>
                   Create Faculty Account
                 </Link>
-                <Link to="/login" className="btn btn-outline" style={{ padding: '10px 16px', borderRadius: '10px', border: '1px solid #e2e8f0', color: '#0f172a', textDecoration: 'none' }}>
+                <Link to="/login" className="btn btn-outline" style={{ 
+                  padding: '0.75rem 1.5rem',
+                  borderRadius: '12px',
+                  border: '2px solid #475569',
+                  color: '#475569',
+                  textDecoration: 'none',
+                  fontWeight: '600',
+                  transition: 'all 0.2s ease-in-out',
+                  background: 'transparent'
+                }}>
                   Student/Coordinator Login
                 </Link>
-                <Link to="/register" className="btn btn-outline" style={{ padding: '10px 16px', borderRadius: '10px', border: '1px solid #e2e8f0', color: '#0f172a', textDecoration: 'none' }}>
+                <Link to="/register" className="btn btn-outline" style={{ 
+                  padding: '0.75rem 1.5rem',
+                  borderRadius: '12px',
+                  border: '2px solid #f97316',
+                  color: '#f97316',
+                  textDecoration: 'none',
+                  fontWeight: '600',
+                  transition: 'all 0.2s ease-in-out',
+                  background: 'transparent'
+                }}>
                   Sign Up
                 </Link>
               </div>
             </div>
 
-            <div style={{ marginTop: '16px', padding: '15px', background: '#f8fafc', borderRadius: '12px', fontSize: '14px', color: '#64748b', border: '1px solid #e2e8f0' }}>
-              <strong>Note:</strong> Faculty accounts are pre-configured by the system administrator. 
-              If you need access, please contact your department head.
+            <div style={{ marginTop: '1rem', padding: '12px', background: '#f8fafc', borderRadius: '8px', fontSize: '14px', color: '#64748b', border: '1px solid #e2e8f0' }}>
+              <strong>Note:</strong> This portal is exclusively for faculty members. Students and coordinators must use the regular login portal. 
+              Faculty accounts are pre-configured by the system administrator. If you need access, please contact your department head.
             </div>
           </div>
         </div>

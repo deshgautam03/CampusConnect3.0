@@ -92,7 +92,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     try {
-      const res = await axios.get('/api/auth/me');
+      const res = await axios.get('https://campusconnect3-0.onrender.com/api/auth/me');
       dispatch({
         type: 'USER_LOADED',
         payload: res.data
@@ -109,7 +109,7 @@ export const AuthProvider = ({ children }) => {
   // Login user
   const login = async (email, password) => {
     try {
-      const res = await axios.post('/api/auth/login', { email, password });
+      const res = await axios.post('https://campusconnect3-0.onrender.com/api/auth/login', { email, password });
       dispatch({
         type: 'LOGIN_SUCCESS',
         payload: res.data
@@ -127,7 +127,7 @@ export const AuthProvider = ({ children }) => {
   // Faculty login
   const facultyLogin = async (email, password) => {
     try {
-      const res = await axios.post('/api/auth/faculty-login', { email, password });
+      const res = await axios.post('https://campusconnect3-0.onrender.com/api/auth/faculty-login', { email, password });
       dispatch({
         type: 'LOGIN_SUCCESS',
         payload: res.data
@@ -145,7 +145,7 @@ export const AuthProvider = ({ children }) => {
   // Register user
   const register = async (userData) => {
     try {
-      const res = await axios.post('/api/auth/register', userData);
+      const res = await axios.post('https://campusconnect3-0.onrender.com/api/auth/register', userData);
       dispatch({
         type: 'REGISTER_SUCCESS',
         payload: res.data
@@ -168,7 +168,7 @@ export const AuthProvider = ({ children }) => {
   // Update user profile
   const updateProfile = async (profileData) => {
     try {
-      const res = await axios.put('/api/users/profile', profileData);
+      const res = await axios.put('https://campusconnect3-0.onrender.com/api/users/profile', profileData);
       dispatch({
         type: 'USER_LOADED',
         payload: res.data

@@ -207,6 +207,13 @@ router.post('/login', [
       return res.status(400).json({ message: 'Account is deactivated' });
     }
 
+    // Only allow students and coordinators to login through regular login
+    if (user.userType === 'faculty') {
+      return res.status(403).json({ 
+        message: 'Faculty members must use the faculty login portal. Please go to /faculty-login' 
+      });
+    }
+
     // Check password
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
@@ -263,13 +270,15 @@ router.post('/faculty-login', [
     // Check if faculty exists
     const faculty = await User.findOne({ email, userType: 'faculty' });
     if (!faculty) {
-      return res.status(400).json({ message: 'Invalid faculty credentials' });
+      return res.status(400).json({ 
+        message: 'Invalid faculty credentials or this account is not a faculty account. Only faculty members can use this login portal.' 
+      });
     }
 
     // Check password
     const isMatch = await faculty.comparePassword(password);
     if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      return res.status(400).json({ message: 'Invalid password' });
     }
 
     // Create JWT token

@@ -45,7 +45,7 @@ const MyApplications = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get('/api/applications/student/my-applications');
+        const res = await axios.get('https://campusconnect3-0.onrender.com/api/applications/student/my-applications');
         setItems(res.data);
       } catch (_) {}
       setLoading(false);

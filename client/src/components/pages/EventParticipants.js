@@ -23,7 +23,7 @@ const EventParticipants = () => {
     const fetchData = async () => {
       try {
         const [eventRes] = await Promise.all([
-          axios.get(`/api/events/${id}`)
+          axios.get(`https://campusconnect3-0.onrender.com/api/events/${id}`)
         ]);
         setEvent(eventRes.data);
         
@@ -31,10 +31,10 @@ const EventParticipants = () => {
         let applicationsRes;
         if (user?.userType === 'student') {
           // Students can only see approved participants with limited info
-          applicationsRes = await axios.get(`/api/applications/event/${id}/participants`);
+          applicationsRes = await axios.get(`https://campusconnect3-0.onrender.com/api/applications/event/${id}/participants`);
         } else {
           // Faculty and coordinators can see all applications with full info
-          applicationsRes = await axios.get(`/api/applications/event/${id}`);
+          applicationsRes = await axios.get(`https://campusconnect3-0.onrender.com/api/applications/event/${id}`);
         }
         
         setApplications(applicationsRes.data);
@@ -63,7 +63,7 @@ const EventParticipants = () => {
     
     setUpdating(true);
     try {
-      const response = await axios.put(`/api/applications/${applicationId}/status`, {
+      const response = await axios.put(`https://campusconnect3-0.onrender.com/api/applications/${applicationId}/status`, {
         status: newStatus,
         remarks
       });
@@ -95,7 +95,7 @@ const EventParticipants = () => {
 
     setUpdating(true);
     try {
-      const response = await axios.put(`/api/applications/${selectedApplication._id}/status`, {
+      const response = await axios.put(`https://campusconnect3-0.onrender.com/api/applications/${selectedApplication._id}/status`, {
         status: 'rejected',
         rejectionReason: rejectionReason.trim(),
         adminPassword: adminPassword
@@ -132,7 +132,7 @@ const EventParticipants = () => {
 
     setUpdating(true);
     try {
-      const response = await axios.put(`/api/applications/${selectedApplication._id}/approve-rejected`, {
+      const response = await axios.put(`https://campusconnect3-0.onrender.com/api/applications/${selectedApplication._id}/approve-rejected`, {
         adminPassword: adminPassword,
         remarks: approvalRemarks
       });

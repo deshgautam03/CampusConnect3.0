@@ -274,9 +274,9 @@ const FacultyRegister = () => {
             </div>
 
             <div style={{ marginTop: '16px', padding: '15px', background: '#f8fafc', borderRadius: '12px', fontSize: '14px', color: '#64748b', border: '1px solid #e2e8f0' }}>
-              <strong>Note:</strong> Faculty accounts have administrative privileges to manage users, 
-              view all events, and monitor campus activities. Please ensure you have proper authorization 
-              to create a faculty account.
+              <strong>Note:</strong> This portal is exclusively for faculty registration. Students and coordinators must use the regular registration portal. 
+              Faculty accounts have administrative privileges to manage users, view all events, and monitor campus activities. 
+              Please ensure you have proper authorization to create a faculty account.
             </div>
           </div>
         </div>

@@ -28,6 +28,7 @@ import CreateEvent from './components/pages/CreateEvent';
 import EditEvent from './components/pages/EditEvent';
 import FacultyUserManagement from './components/pages/FacultyUserManagement';
 import Events from './components/pages/Events';
+import PastEvents from './components/pages/PastEvents';
 import EventParticipants from './components/pages/EventParticipants';
 
 // CSS
@@ -49,6 +50,7 @@ function App() {
             <Route path="/faculty-login" element={<FacultyLogin />} />
             <Route path="/faculty-register" element={<FacultyRegister />} />
             <Route path="/events" element={<Events />} />
+            <Route path="/past-events" element={<PastEvents />} />
             <Route path="/event/:id" element={<EventDetails />} />
             
             {/* Protected Routes */}

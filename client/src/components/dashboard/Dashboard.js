@@ -18,17 +18,24 @@ const Dashboard = () => {
         
         // Fetch stats and events based on user role
         if (user?.userType === 'faculty') {
-          const eventsResponse = await axios.get('/api/events');
-          setRecentEvents(eventsResponse.data.slice(0, 5));
+          const eventsResponse = await axios.get('https://campusconnect3-0.onrender.com/api/events');
+          {
+            const now = new Date();
+            const active = eventsResponse.data.filter(e => {
+              if (!e || !e.registrationDeadline) return true;
+              try { return new Date(e.registrationDeadline) >= now; } catch { return true; }
+            });
+            setRecentEvents(active.slice(0, 5));
+          }
           
-          const statsResponse = await axios.get('/api/applications/stats', {
+          const statsResponse = await axios.get('https://campusconnect3-0.onrender.com/api/applications/stats', {
             headers: { Authorization: `Bearer ${token}` }
           });
           setStats(statsResponse.data);
         } else if (user?.userType === 'coordinator') {
           try {
             console.log('Fetching coordinator events for user:', user.id);
-            const myEventsResponse = await axios.get('/api/events/coordinator/my-events', {
+            const myEventsResponse = await axios.get('https://campusconnect3-0.onrender.com/api/events/coordinator/my-events', {
               headers: { Authorization: `Bearer ${token}` }
             });
             const events = myEventsResponse.data;
@@ -39,7 +46,7 @@ const Dashboard = () => {
             let totalParticipants = 0;
             for (const event of events) {
               try {
-                const applicationsResponse = await axios.get(`/api/applications/event/${event._id}`, {
+                const applicationsResponse = await axios.get(`https://campusconnect3-0.onrender.com/api/applications/event/${event._id}`, {
                   headers: { Authorization: `Bearer ${token}` }
                 });
                 const approvedApplications = applicationsResponse.data.filter(app => app.status === 'approved');
@@ -59,10 +66,17 @@ const Dashboard = () => {
             setStats({ totalEvents: 0, totalParticipants: 0 });
           }
         } else if (user?.userType === 'student') {
-          const eventsResponse = await axios.get('/api/events');
-          setRecentEvents(eventsResponse.data.slice(0, 5));
+          const eventsResponse = await axios.get('https://campusconnect3-0.onrender.com/api/events');
+          {
+            const now = new Date();
+            const active = eventsResponse.data.filter(e => {
+              if (!e || !e.registrationDeadline) return true;
+              try { return new Date(e.registrationDeadline) >= now; } catch { return true; }
+            });
+            setRecentEvents(active.slice(0, 5));
+          }
           
-          const myApplicationsResponse = await axios.get('/api/applications/student/my-applications', {
+          const myApplicationsResponse = await axios.get('https://campusconnect3-0.onrender.com/api/applications/student/my-applications', {
             headers: { Authorization: `Bearer ${token}` }
           });
           setStats({ totalApplications: myApplicationsResponse.data.length });
