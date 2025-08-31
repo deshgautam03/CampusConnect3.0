@@ -50,7 +50,7 @@ const sendEventNotification = async (event) => {
             </p>
           </div>
           <div style="text-align: center; margin-top: 30px;">
-            <a href="${process.env.CLIENT_URL || 'http://localhost:3000'}/events/${event._id}" 
+            <a href="${process.env.CLIENT_URL || 'https://campusconnect3-0-1.onrender.com'}/events/${event._id}" 
                style="background-color: #3498db; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; display: inline-block;">
               View Event Details
             </a>
@@ -121,7 +121,7 @@ const sendWelcomeEmail = async (user) => {
       </div>
       <p style="margin-top:16px;">Start exploring events, apply to participate, and stay updated!</p>
       <div style="margin-top:24px;">
-        <a href="${process.env.CLIENT_URL || 'http://localhost:3000'}/events" style="background:#e67e22; color:#fff; padding:10px 20px; text-decoration:none; border-radius:6px;">Browse Events</a>
+        <a href="${process.env.CLIENT_URL || 'https://campusconnect3-0-1.onrender.com'}/events" style="background:#e67e22; color:#fff; padding:10px 20px; text-decoration:none; border-radius:6px;">Browse Events</a>
       </div>
     </div>
   `;
