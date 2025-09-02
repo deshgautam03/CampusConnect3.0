@@ -82,13 +82,13 @@ const FacultyUserManagement = () => {
       }
       
       console.log('Sending request to save emails:', {
-        url: 'http://localhost:5000/api/email-config/student_emails',
+        url: 'https://campusconnect3-0.onrender.com/api/email-config/student_emails',
         emails: emails,
         headers: axios.defaults.headers.common
       });
       
       // Save emails to backend
-      const response = await axios.put('http://localhost:5000/api/email-config/student_emails', {
+      const response = await axios.put('https://campusconnect3-0.onrender.com/api/email-config/student_emails', {
         emails: emails
       });
       
@@ -127,7 +127,7 @@ const FacultyUserManagement = () => {
 
   const loadStudentEmails = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/email-config/student_emails');
+      const response = await axios.get('https://campusconnect3-0.onrender.com/api/email-config/student_emails');
       if (response.data.emails && response.data.emails.length > 0) {
         setStudentEmails(response.data.emails.join('\n'));
       }

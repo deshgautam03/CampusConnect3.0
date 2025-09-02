@@ -18,13 +18,13 @@ const EventDetails = () => {
     const fetchEventDetails = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:5000/api/events/${id}`);
+        const response = await axios.get(`https://campusconnect3-0.onrender.com/api/events/${id}`);
         setEvent(response.data);
         
         // Check if user has already applied
         if (isAuthenticated && user?.userType === 'student') {
           try {
-            const applicationResponse = await axios.get(`http://localhost:5000/api/applications/student/my-applications`, {
+            const applicationResponse = await axios.get(`https://campusconnect3-0.onrender.com/api/applications/student/my-applications`, {
               headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
             const hasAppliedToEvent = applicationResponse.data.some(
@@ -138,7 +138,7 @@ const EventDetails = () => {
               {event.image ? (
                 <div style={{ position: 'relative', width: '100%', height: '280px' }}>
                   <img 
-                    src={event.image.startsWith('http') ? event.image : `http://localhost:5000${event.image}`} 
+                    src={event.image.startsWith('http') ? event.image : `https://campusconnect3-0.onrender.com${event.image}`} 
                     alt={event.title}
                     style={{
                       width: '100%',
