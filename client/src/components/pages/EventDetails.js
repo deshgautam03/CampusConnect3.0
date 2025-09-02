@@ -18,13 +18,13 @@ const EventDetails = () => {
     const fetchEventDetails = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`https://campusconnect3-0.onrender.com/api/events/${id}`);
+        const response = await axios.get(`http://localhost:5000/api/events/${id}`);
         setEvent(response.data);
         
         // Check if user has already applied
         if (isAuthenticated && user?.userType === 'student') {
           try {
-            const applicationResponse = await axios.get(`https://campusconnect3-0.onrender.com/api/applications/student/my-applications`, {
+            const applicationResponse = await axios.get(`http://localhost:5000/api/applications/student/my-applications`, {
               headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
             const hasAppliedToEvent = applicationResponse.data.some(
@@ -135,32 +135,67 @@ const EventDetails = () => {
               overflow: 'hidden',
               boxShadow: '0 10px 20px rgba(2,6,23,0.06)'
             }}>
-              <div style={{
-                width: '100%',
-                height: '280px',
-                background: 'linear-gradient(135deg, #e2e8f0, #f1f5f9)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#475569',
-                fontWeight: 700
-              }}>
-                <FaCalendarAlt style={{ marginRight: 8 }} /> <img src={event.image} style={{height:"280px",width:"100%"}}/>
-              </div>
+              {event.image ? (
+                <div style={{ position: 'relative', width: '100%', height: '280px' }}>
+                  <img 
+                    src={event.image.startsWith('http') ? event.image : `http://localhost:5000${event.image}`} 
+                    alt={event.title}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      display: 'block'
+                    }}
+                    onError={(e) => {
+                      console.log('Image failed to load:', e.target.src);
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'flex';
+                    }}
+                  />
+                  <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    background: 'linear-gradient(135deg, #e2e8f0, #f1f5f9)',
+                    display: 'none',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#475569',
+                    fontWeight: 700
+                  }}>
+                    <FaCalendarAlt style={{ marginRight: 8 }} /> Image Failed to Load
+                  </div>
+                </div>
+              ) : (
+                <div style={{
+                  width: '100%',
+                  height: '280px',
+                  background: 'linear-gradient(135deg, #e2e8f0, #f1f5f9)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#475569',
+                  fontWeight: 700
+                }}>
+                  <FaCalendarAlt style={{ marginRight: 8 }} /> No Image Available
+                </div>
+              )}
               <div style={{ padding: '16px' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '12px' }}>
                     <FaCalendarAlt />
                     <div>
-                      <div style={{ fontWeight: 700 }}>Event Date</div>
-                      <div>{formatDate(event.eventDate)}</div>
+                      <div style={{ fontWeight: 700 }}>Start Date</div>
+                      <div>{formatDate(event.startDate)}</div>
                     </div>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '12px' }}>
                     <FaClock />
                     <div>
-                      <div style={{ fontWeight: 700 }}>Time</div>
-                      <div>{formatTime(event.eventDate)}</div>
+                      <div style={{ fontWeight: 700 }}>End Date</div>
+                      <div>{formatDate(event.endDate)}</div>
                     </div>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '12px' }}>
@@ -184,16 +219,16 @@ const EventDetails = () => {
             <div style={{ marginTop: '16px', background: 'white', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '16px', boxShadow: '0 10px 20px rgba(2,6,23,0.06)' }}>
               <h2 style={{ marginTop: 0 }}>Event Description</h2>
               <p>{event.description}</p>
-              {event.additionalDetails && (
+              {event.shortDescription && (
                 <div>
-                  <h4>Additional Details:</h4>
-                  <p>{event.additionalDetails}</p>
+                  <h4>Short Description:</h4>
+                  <p>{event.shortDescription}</p>
                 </div>
               )}
-              {event.rules && (
+              {event.requirements && (
                 <div>
-                  <h3>Event Rules & Guidelines</h3>
-                  <p>{event.rules}</p>
+                  <h3>Requirements</h3>
+                  <p>{event.requirements}</p>
                 </div>
               )}
               {event.prizes && (
@@ -245,16 +280,16 @@ const EventDetails = () => {
                   <span>{formatDate(event.registrationDeadline)}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <strong>Event Type:</strong>
-                  <span>{event.eventType || 'General'}</span>
+                  <strong>Category:</strong>
+                  <span>{event.category || 'General'}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <strong>Department:</strong>
-                  <span>{event.department || 'All Departments'}</span>
+                  <strong>Entry Fee:</strong>
+                  <span>{event.entryFee > 0 ? `$${event.entryFee}` : 'Free'}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <strong>Year:</strong>
-                  <span>{event.year || 'All Years'}</span>
+                  <strong>Team Event:</strong>
+                  <span>{event.isTeamEvent ? 'Yes' : 'No'}</span>
                 </div>
               </div>
             </div>

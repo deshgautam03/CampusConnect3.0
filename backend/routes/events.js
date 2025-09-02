@@ -1,24 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
-const multer = require('multer');
-const path = require('path');
 const { auth, authorize } = require('../middleware/auth');
-const { sendEventNotification } = require('../utils/emailService');
+const { sendEventNotification, sendFacultyEventNotification } = require('../utils/emailService');
 const { broadcast } = require('../utils/realtime');
 const Event = require('../models/Event');
-
-// File upload storage
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '..', 'uploads'));
-  },
-  filename: (req, file, cb) => {
-    const unique = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-    cb(null, `${unique}-${file.originalname.replace(/\s+/g, '_')}`);
-  }
-});
-const upload = multer({ storage });
+const { upload, deleteImage } = require('../config/cloudinary');
 
 // Get all events
 router.get('/', async (req, res) => {
@@ -79,14 +66,19 @@ router.post('/', [
     };
 
     if (req.file) {
-      eventData.image = `/uploads/${req.file.filename}`;
+      // Cloudinary returns the secure_url in req.file.path
+      eventData.image = req.file.path;
     }
 
     const event = new Event(eventData);
     await event.save();
 
-    // Send email notification
-    await sendEventNotification(event).catch(() => {});
+    // Populate coordinator information for email notifications
+    const populatedEvent = await Event.findById(event._id).populate('coordinator', 'name email department');
+
+    // Send email notifications
+    await sendEventNotification(populatedEvent).catch(() => {});
+    await sendFacultyEventNotification(populatedEvent).catch(() => {});
 
     broadcast({ type: 'event_created', eventId: event._id });
 
@@ -101,6 +93,7 @@ router.post('/', [
 router.put('/:id', [
   auth,
   authorize('coordinator'),
+  upload.single('image'),
   body('title', 'Title is required').not().isEmpty(),
   body('description', 'Description is required').not().isEmpty(),
   body('shortDescription', 'Short description is required').not().isEmpty(),
@@ -132,8 +125,25 @@ router.put('/:id', [
       return res.status(403).json({ message: 'Not authorized to update this event' });
     }
 
-    // Update event
+    // Update event data
     Object.assign(event, req.body);
+
+    // Handle new image upload
+    if (req.file) {
+      // Delete old image from Cloudinary if it exists
+      if (event.image && event.image.includes('cloudinary.com')) {
+        try {
+          // Extract public_id from Cloudinary URL
+          const publicId = event.image.split('/').pop().split('.')[0];
+          await deleteImage(publicId);
+        } catch (error) {
+          console.error('Error deleting old image:', error);
+        }
+      }
+      // Set new image URL
+      event.image = req.file.path;
+    }
+
     await event.save();
 
     broadcast({ type: 'event_updated', eventId: event._id });
@@ -156,6 +166,17 @@ router.delete('/:id', auth, authorize('coordinator'), async (req, res) => {
     // Check if user is the coordinator of this event
     if (event.coordinator.toString() !== req.user.id) {
       return res.status(403).json({ message: 'Not authorized to delete this event' });
+    }
+
+    // Delete image from Cloudinary if it exists
+    if (event.image && event.image.includes('cloudinary.com')) {
+      try {
+        // Extract public_id from Cloudinary URL
+        const publicId = event.image.split('/').pop().split('.')[0];
+        await deleteImage(publicId);
+      } catch (error) {
+        console.error('Error deleting image from Cloudinary:', error);
+      }
     }
 
     await Event.findByIdAndDelete(req.params.id);

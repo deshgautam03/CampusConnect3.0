@@ -137,6 +137,11 @@ npm start
 - `GET /api/users/students` - Get all students (faculty)
 - `GET /api/users/coordinators` - Get all coordinators (faculty)
 
+### Email Configuration
+- `GET /api/email-config/:type` - Get email configuration (faculty)
+- `PUT /api/email-config/:type` - Update email configuration (faculty)
+- `DELETE /api/email-config/:type` - Delete email configuration (faculty)
+
 ## Project Structure
 
 ```
@@ -189,7 +194,25 @@ CampusConnect2.0/
 
 ## Email Notifications
 
-The system automatically sends email notifications to students when new events are posted. The email list is currently configured with demo emails but can be updated by faculty coordinators.
+The system automatically sends email notifications in the following scenarios:
+
+### Student Notifications
+- Email notifications are sent to students when new events are posted
+- The email list is currently configured with demo emails but can be updated by faculty coordinators
+
+### Faculty Coordinator Notifications
+- **New Event Creation**: When a coordinator creates a new event, notifications are sent to the email addresses configured by faculty coordinators
+- **Notification Details**: The email includes event title, description, dates, venue, category, and coordinator department
+- **Email Management**: Faculty can manage notification email addresses through the "Manage Student Emails" section
+- **Action Links**: Emails include direct links to view event details in the portal
+
+### Faculty Users
+The system includes pre-configured faculty users for different departments:
+- Information Technology: `faculty.it@campus.edu`
+- Computer Science: `faculty.cs@campus.edu`
+- Electronics & Communication: `faculty.ec@campus.edu`
+- Mechanical Engineering: `faculty.me@campus.edu`
+- BPharm: `faculty.bpharm@campus.edu`
 
 ## Security Features
 

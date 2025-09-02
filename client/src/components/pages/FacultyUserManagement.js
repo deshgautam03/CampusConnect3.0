@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaUsers, FaEnvelope, FaLock } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import { useAuth } from '../../contexts/AuthContext';
 
 const Toggle = ({ checked, onChange }) => (
   <label style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
@@ -11,6 +12,7 @@ const Toggle = ({ checked, onChange }) => (
 );
 
 const FacultyUserManagement = () => {
+  const { user } = useAuth();
   const [students, setStudents] = useState([]);
   const [coordinators, setCoordinators] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -33,7 +35,10 @@ const FacultyUserManagement = () => {
     setLoading(false);
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => { 
+    load(); 
+    loadStudentEmails();
+  }, []);
 
   const setStatus = async (id, isActive) => {
     try {
@@ -55,22 +60,79 @@ const FacultyUserManagement = () => {
     }
 
     try {
-      const emails = studentEmails.split('\n').map(email => email.trim()).filter(email => email);
-      // Store emails in localStorage for now (in a real app, this would go to backend)
-      localStorage.setItem('studentEmails', JSON.stringify(emails));
+      // Handle both comma-separated and newline-separated emails
+      let emails = [];
+      if (studentEmails.includes(',')) {
+        // Split by comma first, then by newline, then clean up
+        emails = studentEmails
+          .split(/[,\n]/)
+          .map(email => email.trim())
+          .filter(email => email && email.length > 0);
+      } else {
+        // Split by newline only
+        emails = studentEmails
+          .split('\n')
+          .map(email => email.trim())
+          .filter(email => email && email.length > 0);
+      }
+      
+      if (emails.length === 0) {
+        toast.error('Please enter at least one valid email address');
+        return;
+      }
+      
+      console.log('Sending request to save emails:', {
+        url: 'http://localhost:5000/api/email-config/student_emails',
+        emails: emails,
+        headers: axios.defaults.headers.common
+      });
+      
+      // Save emails to backend
+      const response = await axios.put('http://localhost:5000/api/email-config/student_emails', {
+        emails: emails
+      });
+      
+      console.log('Response received:', response.data);
+      
       toast.success(`${emails.length} student emails saved successfully`);
       setShowStudentEmails(false);
       setStudentEmails('');
       setAdminPassword('');
     } catch (error) {
-      toast.error('Error saving student emails');
+      console.error('Error saving student emails:', error);
+      console.error('Error details:', {
+        message: error.message,
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+        headers: error.response?.headers
+      });
+      
+      if (error.response?.data?.errors) {
+        const errorMessages = error.response.data.errors.map(err => err.msg).join(', ');
+        toast.error(`Validation error: ${errorMessages}`);
+      } else if (error.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else if (error.response?.status === 401) {
+        toast.error('Authentication failed. Please log in again.');
+      } else if (error.response?.status === 403) {
+        toast.error('Access denied. You do not have permission to perform this action.');
+      } else if (error.response?.status === 500) {
+        toast.error('Server error. Please try again later.');
+      } else {
+        toast.error(`Error saving student emails: ${error.message}`);
+      }
     }
   };
 
-  const loadStudentEmails = () => {
-    const saved = localStorage.getItem('studentEmails');
-    if (saved) {
-      setStudentEmails(JSON.parse(saved).join('\n'));
+  const loadStudentEmails = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/email-config/student_emails');
+      if (response.data.emails && response.data.emails.length > 0) {
+        setStudentEmails(response.data.emails.join('\n'));
+      }
+    } catch (error) {
+      console.error('Error loading student emails:', error);
     }
   };
 
@@ -195,9 +257,9 @@ const FacultyUserManagement = () => {
                 Manage Student Emails
               </h2>
               
-              <p style={{ marginBottom: '20px', color: '#6c757d' }}>
-                Enter student emails (one per line) to receive notifications when events are created.
-              </p>
+                             <p style={{ marginBottom: '20px', color: '#6c757d' }}>
+                 Enter student emails (separated by commas or new lines) to receive notifications when events are created.
+               </p>
               
               <form onSubmit={saveStudentEmails}>
                 <div style={{ marginBottom: '20px' }}>
@@ -216,7 +278,7 @@ const FacultyUserManagement = () => {
                       type="password"
                       value={adminPassword}
                       onChange={(e) => setAdminPassword(e.target.value)}
-                      placeholder="Enter Admin@123"
+                      placeholder="Enter Admin Password"
                       required
                       style={{
                         width: '100%',
@@ -236,7 +298,7 @@ const FacultyUserManagement = () => {
                   <textarea
                     value={studentEmails}
                     onChange={(e) => setStudentEmails(e.target.value)}
-                    placeholder="student1@campus.edu&#10;student2@campus.edu&#10;student3@campus.edu"
+                                         placeholder="student1@campus.edu&#10;student2@campus.edu&#10;student3@campus.edu&#10;&#10;Or: student1@campus.edu, student2@campus.edu, student3@campus.edu"
                     rows="8"
                     style={{
                       width: '100%',
