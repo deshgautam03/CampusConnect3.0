@@ -124,10 +124,10 @@ router.post('/forgot-password', [
     }
 
     const { email } = req.body;
-    const user = await User.findOne({ email });
+    const normalizedEmail = String(email).trim().toLowerCase();
+    const user = await User.findOne({ email: normalizedEmail });
     if (!user) {
-      // Do not reveal whether email exists
-      return res.json({ message: 'If the email exists, an OTP has been sent.' });
+      return res.status(404).json({ message: 'Email not registered' });
     }
 
     // Generate 6-digit OTP
@@ -136,12 +136,12 @@ router.post('/forgot-password', [
     user.passwordResetExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
     await user.save();
 
-    await sendOTPEmail(email, otp);
+    await sendOTPEmail(normalizedEmail, otp);
 
-    res.json({ message: 'If the email exists, an OTP has been sent.' });
+    res.json({ message: 'OTP has been sent to your email.' });
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Server error or email not found' });
   }
 });
 

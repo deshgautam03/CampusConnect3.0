@@ -22,13 +22,15 @@ const ForgotPassword = () => {
       });
       const data = await res.json();
       if (res.ok) {
-        toast.success('OTP has been sent to your email!');
+        toast.success(data.message || 'OTP has been sent to your email!');
         setStep(2);
+      } else if (res.status === 404) {
+        toast.error('Email not registered');
       } else {
         toast.error(data.message || 'Failed to send OTP');
       }
     } catch (_) {
-      toast.error('Failed to send OTP');
+      toast.error('');
     } finally {
       setLoading(false);
     }
@@ -44,8 +46,10 @@ const ForgotPassword = () => {
       });
       const data = await res.json();
       if (res.ok) {
-        toast.success('New OTP has been sent to your email!');
+        toast.success(data.message || 'New OTP has been sent to your email!');
         setOtp('');
+      } else if (res.status === 404) {
+        toast.error('Email not registered');
       } else {
         toast.error(data.message || 'Failed to resend OTP');
       }
