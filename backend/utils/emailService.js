@@ -373,6 +373,9 @@ const sendWelcomeEmail = async (user) => {
               <a href="mailto:${process.env.EMAIL_USER}" style="color: #667eea; text-decoration: none;">Contact Support</a>
             </p>
       </div>
+      <p style="margin-top:16px;">Start exploring events, apply to participate, and stay updated!</p>
+      <div style="margin-top:24px;">
+        <a href="${process.env.CLIENT_URL || 'https://campusconnect3-0-1.onrender.com'}/events" style="background:#e67e22; color:#fff; padding:10px 20px; text-decoration:none; border-radius:6px;">Browse Events</a>
       </div>
     </div>
     </body>
