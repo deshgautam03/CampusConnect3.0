@@ -11,14 +11,16 @@ const ForgotPassword = () => {
   const [step, setStep] = useState(1); // 1: email, 2: OTP and password
   const navigate = useNavigate();
 
+  const API_BASE = process.env.REACT_APP_API_URL || '';
+
   const handleSendOTP = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch('/api/auth/forgot-password', {
+      const res = await fetch(`${API_BASE}/api/auth/forgot-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
+        body: JSON.stringify({ email: email.trim().toLowerCase() })
       });
       const data = await res.json();
       if (res.ok) {
@@ -29,8 +31,8 @@ const ForgotPassword = () => {
       } else {
         toast.error(data.message || 'Failed to send OTP');
       }
-    } catch (_) {
-      toast.error('');
+    } catch (err) {
+      toast.error('Unable to send OTP. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -39,10 +41,10 @@ const ForgotPassword = () => {
   const handleResendOTP = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/auth/forgot-password', {
+      const res = await fetch(`${API_BASE}/api/auth/forgot-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
+        body: JSON.stringify({ email: email.trim().toLowerCase() })
       });
       const data = await res.json();
       if (res.ok) {
@@ -75,10 +77,10 @@ const ForgotPassword = () => {
 
     setLoading(true);
     try {
-      const res = await fetch('/api/auth/reset-password', {
+      const res = await fetch(`${API_BASE}/api/auth/reset-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, otp, newPassword })
+        body: JSON.stringify({ email: email.trim().toLowerCase(), otp, newPassword })
       });
       const data = await res.json();
       if (res.ok) {

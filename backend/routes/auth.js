@@ -160,7 +160,8 @@ router.post('/reset-password', [
     }
 
     const { email, otp, newPassword } = req.body;
-    const user = await User.findOne({ email });
+    const normalizedEmail = String(email).trim().toLowerCase();
+    const user = await User.findOne({ email: normalizedEmail });
     if (!user || !user.passwordResetOTP || !user.passwordResetExpires) {
       return res.status(400).json({ message: 'Invalid or expired OTP' });
     }
