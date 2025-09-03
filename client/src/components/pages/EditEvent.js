@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { FaEdit, FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaDollarSign, FaTrophy, FaFileAlt } from 'react-icons/fa';
+import { FaEdit, FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaDollarSign, FaTrophy, FaFileAlt, FaImage } from 'react-icons/fa';
 
 const EditEvent = () => {
   const { id } = useParams();
@@ -11,6 +11,8 @@ const EditEvent = () => {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({});
+  const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -33,6 +35,10 @@ const EditEvent = () => {
           prizes: res.data.prizes || 'Participation Certificate',
           requirements: res.data.requirements || ''
         });
+        // Set current image preview if it exists
+        if (res.data.image) {
+          setImagePreview(res.data.image);
+        }
       } catch (error) {
         toast.error('Error loading event');
         navigate('/my-events');
@@ -49,11 +55,34 @@ const EditEvent = () => {
     setForm(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImage(file);
+      // Create preview for new image
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
       setSubmitting(true);
-      await axios.put(`https://campusconnect3-0.onrender.com/api/events/${id}`, form);
+      
+      // Create FormData for multipart/form-data submission
+      const data = new FormData();
+      Object.entries(form).forEach(([key, value]) => data.append(key, value));
+      if (image) {
+        data.append('image', image);
+      }
+      
+      await axios.put(`https://campusconnect3-0.onrender.com/api/events/${id}`, data, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
       toast.success('Event updated successfully!');
       navigate('/my-events');
     } catch (error) {
@@ -175,7 +204,7 @@ const EditEvent = () => {
 
           {/* Form */}
           <div style={{ padding: '40px' }}>
-            <form onSubmit={onSubmit}>
+            <form onSubmit={onSubmit} encType="multipart/form-data">
               {/* Basic Information */}
               <div style={{ marginBottom: '40px' }}>
                 <h3 style={{ 
@@ -479,6 +508,67 @@ const EditEvent = () => {
                       />
                     </div>
                   )}
+                </div>
+              </div>
+
+              {/* Image Upload */}
+              <div style={{ marginBottom: '40px' }}>
+                <h3 style={{ 
+                  color: '#2c3e50', 
+                  marginBottom: '20px', 
+                  paddingBottom: '10px',
+                  borderBottom: '2px solid #ecf0f1'
+                }}>
+                  <FaImage style={{ marginRight: '10px' }} />
+                  Event Image
+                </h3>
+                
+                <div style={{ display: 'grid', gap: '20px' }}>
+                  {/* Current Image Preview */}
+                  {imagePreview && (
+                    <div>
+                      <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', color: '#2c3e50' }}>
+                        Current Image
+                      </label>
+                      <div style={{ 
+                        width: '200px', 
+                        height: '150px', 
+                        borderRadius: '8px', 
+                        overflow: 'hidden', 
+                        border: '2px solid #ecf0f1',
+                        background: `url(${imagePreview}) center/cover`,
+                        marginBottom: '15px'
+                      }} />
+                      <p style={{ fontSize: '14px', color: '#6c757d', marginBottom: '15px' }}>
+                        Current event image
+                      </p>
+                    </div>
+                  )}
+                  
+                  {/* Image Upload Input */}
+                  <div>
+                    <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', color: '#2c3e50' }}>
+                      {imagePreview ? 'Change Image' : 'Upload Image'}
+                    </label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      style={{
+                        width: '100%',
+                        padding: '15px',
+                        border: '2px solid #ecf0f1',
+                        borderRadius: '10px',
+                        fontSize: '16px',
+                        background: '#f8f9fa'
+                      }}
+                    />
+                    <p style={{ margin: '10px 0 0 0', fontSize: '14px', color: '#6c757d' }}>
+                      {imagePreview && !image ? 'Select a new image to replace the current one' : 
+                       image ? 'New image selected - will replace current image' : 
+                       'Upload an image to make your event more attractive'}
+                    </p>
+                  </div>
                 </div>
               </div>
 

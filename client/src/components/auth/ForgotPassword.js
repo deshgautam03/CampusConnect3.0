@@ -11,7 +11,7 @@ const ForgotPassword = () => {
   const [step, setStep] = useState(1); // 1: email, 2: OTP and password
   const navigate = useNavigate();
 
-  const API_BASE = process.env.REACT_APP_API_URL || '';
+  const API_BASE = process.env.REACT_APP_API_URL || 'https://campusconnect3-0.onrender.com';
 
   const handleSendOTP = async (e) => {
     e.preventDefault();
