@@ -715,40 +715,7 @@ const sendFacultyEventNotification = async (event) => {
     }
     const transporter = createTransporter();
 
-    const mailOptions = {
-      from: `"Campus Connect" <${process.env.EMAIL_USER}>` || "deshgautam05@gmail.com",
-      subject: `New Event Created: ${event.title}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #2c3e50; text-align: center;">📢 New Event Notification</h2>
-          <div style="background-color: #ecf0f1; padding: 20px; border-radius: 10px; margin: 20px 0;">
-            <h3 style="color: #e74c3c; margin-top: 0;">${event.title}</h3>
-            <p style="color: #34495e; line-height: 1.6;">${event.shortDescription}</p>
-            <div style="background-color: white; padding: 15px; border-radius: 8px; margin: 15px 0;">
-              <p><strong>📅 Date:</strong> ${new Date(event.startDate).toLocaleDateString()} - ${new Date(event.endDate).toLocaleDateString()}</p>
-              <p><strong>📍 Venue:</strong> ${event.venue}</p>
-              <p><strong>🏷️ Category:</strong> ${event.category}</p>
-              <p><strong>⏰ Registration Deadline:</strong> ${new Date(event.registrationDeadline).toLocaleDateString()}</p>
-              <p><strong>👥 Max Participants:</strong> ${event.maxParticipants}</p>
-              ${event.entryFee > 0 ? `<p><strong>💰 Entry Fee:</strong> $${event.entryFee}</p>` : ''}
-              <p><strong>🎯 Department:</strong> ${event.coordinator?.department || 'N/A'}</p>
-            </div>
-            <p style="color: #7f8c8d; font-size: 14px;">
-              A new event has been created and is now available for student applications. Please review the event details and monitor student participation.
-            </p>
-          </div>
-          <div style="text-align: center; margin-top: 30px;">
-            <a href="${process.env.CLIENT_URL || 'http://localhost:3000'}/events/${event._id}" 
-               style="background-color: #3498db; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; display: inline-block;">
-              View Event Details
-            </a>
-          </div>
-          <div style="text-align: center; margin-top: 20px; color: #95a5a6; font-size: 12px;">
-            <p>This is an automated notification from Campus Events Portal</p>
-          </div>
-        </div>
-      `
-    };
+    
 
     // Send emails to all faculty coordinators
     const emailPromises = facultyEmails.map(email => {
